@@ -1,104 +1,84 @@
 // pages/thankyou.js
+//
+// PENTING: Halaman ini TIDAK didaftarkan di Dashboard Midtrans.
+// Redirect ke sini terjadi lewat dua jalur:
+//  1) callbacks.finish yang dikirim langsung di body request Snap API
+//     (lihat pages/api/payment/create.js & pages/api/renew.js) — ini
+//     sesuai instruksi Anda: hardcode di create.js, bukan di Midtrans.
+//  2) onSuccess() dari popup Snap.js di sisi client (index.js/renew.js)
+//     sebagai fallback kalau pembeli tidak menutup popup secara manual.
 
-import Head from 'next/head';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import Head from 'next/head';
+
+const APP_NAME = 'CertGen Pro';
+const WHATSAPP_NUMBER = '6289627312600';
+const WHATSAPP_DISPLAY = '0896-2731-2600';
+const WHATSAPP_LINK = (msg) => `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+const DOWNLOAD_LINK = '/download';
 
 export default function ThankYou() {
     const router = useRouter();
     const { license_key, type } = router.query;
     const [copied, setCopied] = useState(false);
 
-    // Fungsi klik salin otomatis ke Clipboard
-    const handleCopy = () => {
+    const isRenewal = type === 'renew';
+
+    function copyKey() {
         if (!license_key) return;
         navigator.clipboard.writeText(license_key);
         setCopied(true);
-        
-        // Reset ikon kembali normal setelah 2 detik
-        setTimeout(() => {
-            setCopied(false);
-        }, 2000);
-    };
+        setTimeout(() => setCopied(false), 2000);
+    }
 
     return (
         <>
             <Head>
-                <title>Terima Kasih Atas Pembelian Anda</title>
+                <title>Pembayaran Berhasil — {APP_NAME}</title>
             </Head>
             <div style={containerStyle}>
                 <main style={cardStyle}>
-                    <div style={{ textAlign: 'center', marginBottom: 20 }}>
-                        <div style={successIconStyle}>✓</div>
-                        <h1 style={titleStyle}>
-                            {type === 'renew' ? 'Perpanjangan Berhasil!' : 'Terima Kasih!'}
-                        </h1>
-                        <p style={subtitleStyle}>
-                            Transaksi Anda telah selesai diproses dengan sukses.
-                        </p>
-                    </div>
+                    <div style={iconWrapStyle}>✅</div>
+                    <h1 style={titleStyle}>{isRenewal ? 'Perpanjangan Berhasil!' : 'Pembayaran Berhasil!'}</h1>
+                    <p style={subtitleStyle}>
+                        {isRenewal
+                            ? `Lisensi ${APP_NAME} Anda telah berhasil diperpanjang.`
+                            : `Terima kasih telah membeli ${APP_NAME}.`}{' '}
+                        Detail lisensi juga sudah otomatis dikirim ke WhatsApp &amp; Email yang Anda daftarkan.
+                    </p>
 
-                    <div style={boxStyle}>
-                        <p style={labelStyle}>KODE LISENSI ANDA:</p>
-                        
-                        {/* Container Kode yang dapat Diklik untuk Salin */}
-                        <div 
-                            onClick={handleCopy} 
-                            style={{
-                                ...keyWrapperStyle,
-                                borderColor: copied ? '#22c55e' : '#3b82f6',
-                                background: copied ? '#0a0e1a' : '#12213f'
-                            }} 
-                            title="Klik untuk menyalin"
-                        >
-                            <span style={keyTextStyle}>
-                                {license_key || "Memeriksa..."}
-                            </span>
-                            
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                {copied && <span style={copiedTextStyle}>Tersalin!</span>}
-                                <div style={iconContainerStyle}>
-                                    {copied ? (
-                                        // Ikon Centang Hijau saat berhasil disalin
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                        </svg>
-                                    ) : (
-                                        // Ikon Dokumen Ganda (Copy) Standar
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                        </svg>
-                                    )}
-                                </div>
+                    {license_key && (
+                        <div style={keyBoxStyle}>
+                            <div style={{ fontSize: 11, color: '#64748b', marginBottom: 6, fontWeight: 'bold' }}>KODE LISENSI ANDA</div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
+                                <code style={keyTextStyle}>{license_key}</code>
+                                <button onClick={copyKey} style={copyButtonStyle}>{copied ? 'Tersalin ✓' : 'Salin'}</button>
                             </div>
                         </div>
-                        
-                        <p style={{ color: '#94a3b8', fontSize: 11, marginTop: 10, margin: 0 }}>
-                            *Klik kotak di atas untuk menyalin kode. Kode lisensi ini juga sudah dikirim ke WhatsApp dan Email Anda.
-                        </p>
-                    </div>
+                    )}
 
-                    <div style={{ marginTop: 20 }}>
-                        <h3 style={{ margin: '0 0 10px 0', fontSize: 14, color: '#fff' }}>Panduan Langkah Selanjutnya:</h3>
-                        <ol style={listStyle}>
-                            <li>Unduh berkas instalasi aplikasi CertGen Pro melalui tautan di bawah ini.</li>
-                            <li>Ekstrak file ZIP, lalu buka <strong>CertGenPro.exe</strong>.</li>
-                            <li>Masukkan kode lisensi di atas pada dialog aktivasi yang muncul.</li>
-                            <li>Selesai! Aplikasi Anda siap digunakan secara penuh di perangkat ini.</li>
+                    <div style={stepsBoxStyle}>
+                        <div style={{ fontWeight: 'bold', fontSize: 13, marginBottom: 10, color: '#0f172a' }}>Langkah Aktivasi:</div>
+                        <ol style={{ margin: 0, paddingLeft: 18, fontSize: 13, color: '#334155', lineHeight: 1.8 }}>
+                            <li>Download aplikasi {APP_NAME} (Windows 10/11)</li>
+                            <li>Install &amp; buka aplikasinya</li>
+                            <li>Masukkan kode lisensi di atas pada dialog aktivasi</li>
+                            <li>Aplikasi otomatis terkunci ke perangkat ini (1 lisensi = 1 perangkat)</li>
                         </ol>
-                        <p style={{ color: '#64748b', fontSize: 11.5, marginTop: 10 }}>
-                            Kode lisensi ini juga sudah dikirim ke WhatsApp dan Email yang Anda daftarkan saat pembelian.
-                        </p>
                     </div>
 
-                    {/* Tautan unduhan produk */}
-                    <a href="/download" target="_blank" rel="noreferrer" style={downloadButtonStyle}>
-                        Unduh CertGen Pro 📥
-                    </a>
+                    <a href={DOWNLOAD_LINK} style={downloadButtonStyle}>⬇️ Download {APP_NAME} Sekarang</a>
 
-                    <div style={{ marginTop: 24, textAlign: 'center', borderTop: '1px solid #1f2937', paddingTop: 16 }}>
-                        <a href="/" style={linkStyle}>Kembali ke Beranda</a>
+                    <p style={{ textAlign: 'center', fontSize: 12, color: '#64748b', marginTop: 20 }}>
+                        Tidak menerima pesan WhatsApp/Email dalam 5 menit?{' '}
+                        <a href={WHATSAPP_LINK(`Halo Admin, saya sudah bayar tapi belum menerima lisensi ${APP_NAME}. Kode lisensi: ${license_key || '-'}`)} target="_blank" rel="noopener noreferrer" style={{ color: '#1d4ed8', fontWeight: 'bold', textDecoration: 'none' }}>
+                            💬 Chat Admin ({WHATSAPP_DISPLAY})
+                        </a>
+                    </p>
+
+                    <div style={{ textAlign: 'center', marginTop: 16 }}>
+                        <a href="/" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: 12 }}>← Kembali ke Beranda</a>
                     </div>
                 </main>
             </div>
@@ -106,53 +86,13 @@ export default function ThankYou() {
     );
 }
 
-// CSS Inline Tema Gelap
-const containerStyle = { background: '#0a0e1a', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, color: '#f8fafc', fontFamily: 'system-ui, sans-serif' };
-const cardStyle = { background: '#111a2e', border: '1px solid #1e293b', padding: '32px 24px', borderRadius: 16, width: '100%', maxWidth: 480, boxSizing: 'border-box' };
-const successIconStyle = { width: 50, height: 50, background: '#10b981', color: '#fff', borderRadius: '50%', fontSize: 24, fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto' };
-const titleStyle = { margin: 0, fontSize: 22, fontWeight: 'bold', color: '#fff' };
-const subtitleStyle = { margin: '8px 0 0 0', color: '#10b981', fontSize: 13, fontWeight: '600' };
-const boxStyle = { background: '#0d1424', border: '1px solid #1e293b', borderRadius: 12, padding: 16, textAlign: 'center', marginTop: 20 };
-const labelStyle = { margin: '0 0 8px 0', fontSize: 11, fontWeight: 'bold', color: '#94a3b8', letterSpacing: '0.05em' };
-const listStyle = { color: '#cbd5e1', fontSize: 13, paddingLeft: 20, margin: 0, lineHeight: '1.6' };
-const downloadButtonStyle = { display: 'block', width: '100%', padding: 12, background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 'bold', fontSize: 13, textAlign: 'center', textDecoration: 'none', marginTop: 20, boxSizing: 'border-box' };
-const linkStyle = { color: '#94a3b8', textDecoration: 'none', fontSize: 12 };
-
-// Styling Kotak Kode Lisensi Interaktif
-const keyWrapperStyle = {
-    borderRadius: 8,
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    padding: '12px 16px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    cursor: 'pointer',
-    userSelect: 'all',
-    transition: 'all 0.2s ease-in-out'
-};
-
-const keyTextStyle = {
-    color: '#3b82f6',
-    fontSize: 16,
-    fontWeight: 'bold',
-    fontFamily: 'monospace',
-    letterSpacing: '0.02em'
-};
-
-const copiedTextStyle = {
-    fontSize: 11,
-    color: '#10b981',
-    fontWeight: 'bold',
-    letterSpacing: '0.02em'
-};
-
-const iconContainerStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 4,
-    background: '#0d1424',
-    borderRadius: 6,
-    border: '1px solid #334155'
-};
+const containerStyle = { background: '#f5f8ff', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, color: '#0f172a', fontFamily: "'DM Sans', system-ui, sans-serif" };
+const cardStyle = { background: '#fff', border: '1px solid #e2e8f0', padding: '36px 26px', borderRadius: 20, width: '100%', maxWidth: 480, boxSizing: 'border-box', textAlign: 'center', boxShadow: '0 20px 50px rgba(15,23,42,0.06)' };
+const iconWrapStyle = { fontSize: 48, marginBottom: 8 };
+const titleStyle = { margin: '0 0 8px', fontSize: 24, fontWeight: 800, color: '#0f172a', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif" };
+const subtitleStyle = { margin: '0 0 20px', color: '#475569', fontSize: 13, lineHeight: 1.6 };
+const keyBoxStyle = { background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 12, padding: '16px 14px', marginBottom: 20 };
+const keyTextStyle = { fontSize: 16, fontWeight: 'bold', color: '#1d4ed8', letterSpacing: 1, fontFamily: 'monospace' };
+const copyButtonStyle = { background: '#1d4ed8', color: '#fff', border: 'none', borderRadius: 6, padding: '6px 12px', fontSize: 11, fontWeight: 'bold', cursor: 'pointer' };
+const stepsBoxStyle = { background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12, padding: '16px 18px', textAlign: 'left', marginBottom: 22 };
+const downloadButtonStyle = { display: 'block', width: '100%', boxSizing: 'border-box', padding: 14, background: '#1d4ed8', color: '#fff', borderRadius: 10, textAlign: 'center', textDecoration: 'none', fontWeight: 'bold', fontSize: 14, boxShadow: '0 8px 20px rgba(29,78,216,0.25)' };

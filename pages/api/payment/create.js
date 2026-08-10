@@ -1,29 +1,29 @@
 // pages/api/payment/create.js
 
 import { supabase } from '../../../lib/supabase';
-import { generateLicenseKey, sendWhatsApp, sendEmail, buildLicenseMessage, normalizeWhatsApp } from '../../../lib/notify';
+import { generateLicenseKey, sendWhatsApp, sendEmail, buildLicenseMessage } from '../../../lib/notify';
 
-// Tabel harga CertGen Pro — halaman utama (pembelian baru).
-// Paket "daily" sengaja TIDAK ditawarkan di halaman utama (hanya ada di halaman renew),
-// tapi tetap didaftarkan di sini supaya endpoint ini tetap bisa memprosesnya kalau dipakai dari renew flow lain.
+// ============================================================================
+// DOMAIN BARU (GitHub + Vercel akun baru). Ganti nilai ini kalau domain
+// produksi Anda berubah. Dipakai untuk callback "finish" Midtrans supaya
+// Snap popup mengarahkan pembeli ke halaman thankyou TANPA perlu setting
+// tambahan apa pun di Dashboard Midtrans.
+// ============================================================================
+const SITE_URL = process.env.SITE_URL || 'https://certgenpro.vercel.app';
+
+// Tabel harga resmi CertGen Pro
 const PRICE_TABLE = {
     certgenpro: {
         appName: 'CertGen Pro',
         prefix: 'CGP',
         packages: {
-            daily:    { price: 19000,  days: 1 },
+            daily:    { price: 19000,  days: 1 },      // hanya tersedia di halaman renew
             monthly:  { price: 49000,  days: 30 },
             yearly:   { price: 299000, days: 365 },
-            lifetime: { price: 599000, days: 36135 }, // ~99 tahun = lifetime
+            lifetime: { price: 599000, days: 36135 },   // ~99 tahun (setara lifetime)
         },
     },
 };
-
-// URL halaman Thank You di deployment Vercel BARU Anda.
-// PENTING: ganti env NEXT_PUBLIC_SITE_URL di Vercel project baru setelah domain jadi,
-// atau langsung ganti fallback di bawah ini. Link ini TIDAK didaftarkan di dashboard
-// Midtrans mana pun — dikirim otomatis lewat payload `callbacks.finish` setiap transaksi.
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://certgenpro-landing.vercel.app';
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -40,8 +40,6 @@ export default async function handler(req, res) {
 
         const pkg = appConfig.packages[package_type];
         if (!pkg) return res.status(400).json({ error: 'package_type tidak valid' });
-
-        const whatsappNormalized = normalizeWhatsApp(whatsapp);
 
         let finalPrice = pkg.price;
         let finalDays = pkg.days;
@@ -74,7 +72,7 @@ export default async function handler(req, res) {
                     app_id,
                     license_key: licenseKey,
                     email,
-                    whatsapp: whatsappNormalized,
+                    whatsapp,
                     type: 'trial',
                     status: 'pending',
                     expires_at: expiresAt.toISOString(),
@@ -93,7 +91,7 @@ export default async function handler(req, res) {
                     type: 'trial',
                     expiresAt,
                 });
-                if (whatsappNormalized) await sendWhatsApp(whatsappNormalized, msg.text);
+                if (whatsapp) await sendWhatsApp(whatsapp, msg.text);
                 await sendEmail({ to: email, subject: `Lisensi Trial ${appConfig.appName}`, htmlContent: msg.html });
 
                 return res.status(200).json({
@@ -124,11 +122,11 @@ export default async function handler(req, res) {
                 },
                 body: JSON.stringify({
                     transaction_details: { order_id: orderId, gross_amount: finalPrice },
-                    customer_details: { email, phone: whatsappNormalized },
+                    customer_details: { email, phone: whatsapp },
 
-                    // ── CALLBACK FINISH: mengarah ke halaman Thank You CertGen Pro ──
-                    // Tidak perlu didaftarkan manual di dashboard Midtrans mana pun,
-                    // karena dikirim langsung sebagai bagian dari payload transaksi ini.
+                    // ── CALLBACK FINISH — diset langsung di sini (bukan di Dashboard
+                    // Midtrans) supaya pindah GitHub/Vercel akun baru tidak perlu
+                    // konfigurasi ulang apa pun di sisi Midtrans. ──
                     callbacks: {
                         finish: `${SITE_URL}/thankyou`,
                     },
@@ -152,7 +150,7 @@ export default async function handler(req, res) {
             license_key: licenseKey,
             order_id: orderId,
             email,
-            whatsapp: whatsappNormalized,
+            whatsapp,
             type: package_type,
             status: 'pending',
             expires_at: new Date(Date.now() + finalDays * 86400000).toISOString(),

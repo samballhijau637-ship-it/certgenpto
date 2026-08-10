@@ -4,7 +4,6 @@ import { supabase } from '../../../lib/supabase';
 import { checkAdminAuth } from '../../../lib/adminAuth';
 import { generateLicenseKey, sendWhatsApp, sendEmail, buildLicenseMessage } from '../../../lib/notify';
 
-// Penamaan aplikasi & prefix lisensi
 const APP_NAMES = { certgenpro: 'CertGen Pro' };
 const APP_PREFIXES = { certgenpro: 'CGP' };
 const PACKAGE_DAYS = { daily: 1, monthly: 30, yearly: 365, lifetime: 36135 };
@@ -13,10 +12,17 @@ export default async function handler(req, res) {
     if (!checkAdminAuth(req)) return res.status(401).json({ error: 'Unauthorized' });
 
     if (req.method === 'GET') {
-        const { app_id, status } = req.query;
+        const { app_id, status, expired } = req.query;
         let query = supabase.from('licenses').select('*').order('created_at', { ascending: false }).limit(200);
         if (app_id) query = query.eq('app_id', app_id);
         if (status) query = query.eq('status', status);
+
+        // ── FITUR BARU: filter khusus lisensi yang sudah kedaluwarsa ──
+        // expired=true -> tanggal expires_at sudah lewat DAN belum dicabut (revoked).
+        if (expired === 'true') {
+            query = query.not('expires_at', 'is', null).lt('expires_at', new Date().toISOString()).neq('status', 'revoked');
+        }
+
         const { data, error } = await query;
         if (error) return res.status(500).json({ error: error.message });
         return res.status(200).json({ licenses: data });
@@ -71,12 +77,11 @@ export default async function handler(req, res) {
         return res.status(200).json({ license: data });
     }
 
-    // ── HAPUS LISENSI PERMANEN (DELETE) ──
-    // Mendukung hapus satu lisensi ({ id }) ATAU hapus massal ({ ids: [...] })
-    // dipakai oleh fitur "pilih semua lisensi kadaluarsa lalu hapus" di admin dashboard.
     if (req.method === 'DELETE') {
         const { id, ids } = req.body;
 
+        // ── FITUR BARU: hapus banyak lisensi sekaligus (mis. hasil "Pilih Semua
+        // Kadaluarsa" di dashboard admin). Kirim { ids: [id1, id2, ...] }. ──
         if (Array.isArray(ids) && ids.length > 0) {
             const { error, count } = await supabase
                 .from('licenses')
@@ -84,9 +89,10 @@ export default async function handler(req, res) {
                 .in('id', ids);
 
             if (error) return res.status(500).json({ error: error.message });
-            return res.status(200).json({ message: `${count ?? ids.length} lisensi berhasil dihapus permanen.`, deleted: count ?? ids.length });
+            return res.status(200).json({ message: `${count ?? ids.length} lisensi berhasil dihapus permanen.`, deleted_count: count ?? ids.length });
         }
 
+        // Hapus satu lisensi (perilaku lama, tetap dipertahankan)
         if (!id) return res.status(400).json({ error: 'id atau ids wajib diisi' });
 
         const { error } = await supabase

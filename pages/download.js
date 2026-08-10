@@ -3,100 +3,84 @@
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 
-export default function DownloadPortal() {
+const APP_NAME = 'CertGen Pro';
+const WHATSAPP_NUMBER = '6289627312600';
+const WHATSAPP_DISPLAY = '0896-2731-2600';
+const WHATSAPP_LINK = (msg) => `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+
+export default function Download() {
     const [downloads, setDownloads] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        async function fetchDownloads() {
-            try {
-                const res = await fetch('/api/downloads');
-                if (res.ok) {
-                    const data = await res.json();
-                    setDownloads(data.downloads);
-                }
-            } catch (err) {
-                console.error("Gagal mengambil data rilis:", err);
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchDownloads();
+        fetch('/api/downloads')
+            .then((res) => res.json())
+            .then((data) => setDownloads(data.downloads || []))
+            .finally(() => setLoading(false));
     }, []);
+
+    const latest = downloads.find((d) => d.app_name === APP_NAME) || downloads[0];
 
     return (
         <>
             <Head>
-                <title>Download CertGen Pro</title>
+                <title>Download {APP_NAME}</title>
             </Head>
             <div style={containerStyle}>
                 <main style={cardStyle}>
-                    <div style={{ textAlign: 'center', marginBottom: 24 }}>
-                        <span style={badgeStyle}>PORTAL UNDUHAN PRODUK</span>
-                        <h1 style={titleStyle}>📥 Berkas CertGen Pro</h1>
-                        <p style={subtitleStyle}>Temukan berkas instalasi resmi dari versi rilis terbaru di bawah ini.</p>
+                    <div style={{ fontSize: 44, marginBottom: 8 }}>🖥️</div>
+                    <h1 style={titleStyle}>Download {APP_NAME}</h1>
+                    <p style={subtitleStyle}>
+                        Aplikasi desktop untuk Windows 10 &amp; 11. Sudah punya kode lisensi? Install lalu masukkan kode lisensi Anda saat pertama kali membuka aplikasi.
+                    </p>
+
+                    {loading && <p style={{ fontSize: 13, color: '#64748b', textAlign: 'center' }}>Memuat tautan unduhan...</p>}
+
+                    {!loading && latest && (
+                        <>
+                            <div style={versionBoxStyle}>
+                                <div style={{ fontSize: 11, color: '#1e3a8a', fontWeight: 'bold' }}>VERSI TERBARU</div>
+                                <div style={{ fontSize: 18, fontWeight: 800, color: '#0f172a', marginTop: 4 }}>{latest.version}</div>
+                            </div>
+                            <a href={latest.download_url} style={downloadButtonStyle}>⬇️ Download {APP_NAME}</a>
+                        </>
+                    )}
+
+                    {!loading && !latest && (
+                        <p style={{ fontSize: 13, color: '#64748b', textAlign: 'center' }}>
+                            Tautan unduhan belum tersedia. Silakan hubungi admin untuk mendapatkan file instalasi.
+                        </p>
+                    )}
+
+                    <div style={notesBoxStyle}>
+                        <div style={{ fontWeight: 'bold', fontSize: 13, marginBottom: 8, color: '#0f172a' }}>Catatan Penting:</div>
+                        <ul style={{ margin: 0, paddingLeft: 18, fontSize: 12, color: '#334155', lineHeight: 1.8 }}>
+                            <li>Diuji stabil di Windows 10 &amp; Windows 11</li>
+                            <li>Aplikasi berjalan offline, kecuali saat mengirim email massal (butuh internet)</li>
+                            <li>1 kode lisensi hanya untuk 1 perangkat</li>
+                        </ul>
                     </div>
 
-                    {loading ? (
-                        <p style={{ textAlign: 'center', color: '#94a3b8', fontSize: 14 }}>Memuat daftar berkas rilis...</p>
-                    ) : downloads.length === 0 ? (
-                        <div style={emptyBoxStyle}>
-                            <p style={{ margin: 0, fontSize: 13, color: '#94a3b8' }}>Saat ini belum ada versi rilis yang tersedia untuk diunduh.</p>
-                        </div>
-                    ) : (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                            {downloads.map((item, index) => (
-                                <div key={item.id} style={releaseCardStyle(index === 0)}>
-                                    {index === 0 && <span style={latestLabelStyle}>RILIS TERBARU</span>}
-                                    <h3 style={{ margin: 0, color: '#fff', fontSize: 16 }}>{item.app_name}</h3>
-                                    <p style={{ margin: '4px 0 12px 0', fontSize: 13, color: '#94a3b8' }}>
-                                        Versi Aplikasi: <strong style={{ color: '#3b82f6' }}>{item.version}</strong>
-                                    </p>
-                                    <a href={item.download_url} target="_blank" rel="noreferrer" style={downloadButtonStyle(index === 0)}>
-                                        Unduh Berkas Instalasi (.ZIP) 📥
-                                    </a>
-                                </div>
-                            ))}
-                        </div>
-                    )}
+                    <p style={{ textAlign: 'center', fontSize: 12, color: '#64748b', marginTop: 20 }}>
+                        Kendala instalasi atau aktivasi?{' '}
+                        <a href={WHATSAPP_LINK(`Halo Admin, saya butuh bantuan instalasi ${APP_NAME}.`)} target="_blank" rel="noopener noreferrer" style={{ color: '#1d4ed8', fontWeight: 'bold', textDecoration: 'none' }}>
+                            💬 Chat Admin ({WHATSAPP_DISPLAY})
+                        </a>
+                    </p>
+
+                    <div style={{ textAlign: 'center', marginTop: 16 }}>
+                        <a href="/" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: 12 }}>← Kembali ke Beranda</a>
+                    </div>
                 </main>
             </div>
         </>
     );
 }
 
-// CSS Inline
-const containerStyle = { background: '#0a0e1a', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, color: '#f8fafc', fontFamily: 'system-ui, sans-serif' };
-const cardStyle = { background: '#111a2e', border: '1px solid #1e293b', padding: '32px 24px', borderRadius: 16, width: '100%', maxWidth: 480, boxSizing: 'border-box' };
-const badgeStyle = { background: '#1e293b', color: '#3b82f6', fontSize: 11, fontWeight: 'bold', padding: '4px 10px', borderRadius: 20, display: 'inline-block', marginBottom: 12 };
-const titleStyle = { margin: 0, fontSize: 24, fontWeight: 'bold', color: '#fff' };
-const subtitleStyle = { margin: '8px 0 0 0', color: '#94a3b8', fontSize: 13, lineHeight: '1.4' };
-const emptyBoxStyle = { background: '#0d1424', border: '1px dashed #1f2937', borderRadius: 10, padding: 24, textAlign: 'center' };
-
-const releaseCardStyle = (isLatest) => ({
-    background: '#0d1424',
-    border: isLatest ? '1px solid #10b981' : '1px solid #1f2937',
-    borderRadius: 12,
-    padding: 16,
-    position: 'relative',
-    marginTop: isLatest ? 8 : 0
-});
-
-const latestLabelStyle = { position: 'absolute', top: -10, right: 12, background: '#10b981', color: '#fff', fontSize: 9, fontWeight: 'bold', padding: '3px 8px', borderRadius: 4 };
-
-const downloadButtonStyle = (isLatest) => ({
-    display: 'block',
-    width: '100%',
-    padding: 10,
-    background: isLatest ? '#10b981' : '#1e293b',
-    color: '#fff',
-    border: 'none',
-    borderRadius: 8,
-    cursor: 'pointer',
-    fontWeight: 'bold',
-    fontSize: 13,
-    textAlign: 'center',
-    textDecoration: 'none',
-    boxSizing: 'border-box',
-    transition: '0.2s'
-});
+const containerStyle = { background: '#f5f8ff', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, color: '#0f172a', fontFamily: "'DM Sans', system-ui, sans-serif" };
+const cardStyle = { background: '#fff', border: '1px solid #e2e8f0', padding: '36px 26px', borderRadius: 20, width: '100%', maxWidth: 460, boxSizing: 'border-box', textAlign: 'center', boxShadow: '0 20px 50px rgba(15,23,42,0.06)' };
+const titleStyle = { margin: '0 0 8px', fontSize: 22, fontWeight: 800, color: '#0f172a', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif" };
+const subtitleStyle = { margin: '0 0 22px', color: '#475569', fontSize: 13, lineHeight: 1.6 };
+const versionBoxStyle = { background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 12, padding: '12px 14px', marginBottom: 16 };
+const downloadButtonStyle = { display: 'block', width: '100%', boxSizing: 'border-box', padding: 14, background: '#1d4ed8', color: '#fff', borderRadius: 10, textAlign: 'center', textDecoration: 'none', fontWeight: 'bold', fontSize: 14, boxShadow: '0 8px 20px rgba(29,78,216,0.25)', marginBottom: 20 };
+const notesBoxStyle = { background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12, padding: '14px 16px', textAlign: 'left' };

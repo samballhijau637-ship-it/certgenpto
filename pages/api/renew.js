@@ -1,17 +1,16 @@
 // pages/api/renew.js
 
 import { supabase } from '../../lib/supabase';
-import { normalizeWhatsApp } from '../../lib/notify';
+
+const SITE_URL = process.env.SITE_URL || 'https://certgenpro.vercel.app';
 
 // Durasi hari untuk masing-masing paket
 const PACKAGE_DAYS = { daily: 1, monthly: 30, yearly: 365, lifetime: 36135 };
 
-// Harga perpanjangan (renew) CertGen Pro — termasuk paket harian Rp 19.000
+// Harga resmi perpanjangan CertGen Pro
 const PACKAGE_PRICE = {
     certgenpro: { daily: 19000, monthly: 49000, yearly: 299000, lifetime: 599000 },
 };
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://certgenpro-landing.vercel.app';
 
 export default async function handler(req, res) {
     if (req.method === 'GET') {
@@ -72,9 +71,9 @@ export default async function handler(req, res) {
                 },
                 body: JSON.stringify({
                     transaction_details: { order_id: orderId, gross_amount: price },
-                    customer_details: { email: license.email, phone: normalizeWhatsApp(license.whatsapp) },
+                    customer_details: { email: license.email, phone: license.whatsapp },
                     callbacks: {
-                        finish: `${SITE_URL}/thankyou`,
+                        finish: `${SITE_URL}/thankyou?type=renew`,
                     },
                     custom_field1: app_id,
                     custom_field2: `renew_${package_type}`,

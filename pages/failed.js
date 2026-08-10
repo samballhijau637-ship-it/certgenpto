@@ -1,51 +1,34 @@
 // pages/failed.js
 
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 
-export default function PaymentFailed() {
-    const router = useRouter();
+const APP_NAME = 'CertGen Pro';
+const WHATSAPP_NUMBER = '6289627312600';
+const WHATSAPP_DISPLAY = '0896-2731-2600';
+const WHATSAPP_LINK = (msg) => `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 
+export default function Failed() {
     return (
         <>
             <Head>
-                <title>Pembayaran Gagal / Dibatalkan</title>
+                <title>Pembayaran Gagal — {APP_NAME}</title>
             </Head>
             <div style={containerStyle}>
                 <main style={cardStyle}>
-                    <div style={{ textAlign: 'center', marginBottom: 24 }}>
-                        <div style={failedIconStyle}>✗</div>
-                        <h1 style={titleStyle}>Pembayaran Gagal</h1>
-                        <p style={subtitleStyle}>
-                            Transaksi Anda tidak berhasil diselesaikan.
-                        </p>
-                    </div>
-
-                    <div style={boxStyle}>
-                        <p style={{ margin: '0 0 12px 0', fontSize: 13, color: '#f8fafc', fontWeight: 'bold' }}>
-                            Apa yang Terjadi?
-                        </p>
-                        <p style={{ margin: 0, fontSize: 13, color: '#94a3b8', lineHeight: '1.5' }}>
-                            Pembayaran Anda dibatalkan oleh sistem, ditolak oleh bank penyedia, atau batas waktu transaksi telah habis.
-                        </p>
-                    </div>
-
-                    <div style={{ marginTop: 20 }}>
-                        <h3 style={{ margin: '0 0 10px 0', fontSize: 14, color: '#fff' }}>Langkah Solusi:</h3>
-                        <ol style={listStyle}>
-                            <li>Periksa kembali saldo rekening atau limit metode pembayaran Anda.</li>
-                            <li>Pastikan koneksi internet Anda stabil sebelum mengulang transaksi.</li>
-                            <li>Jika saldo Anda telanjur terpotong namun lisensi belum diterima, silakan balas pesan WhatsApp bantuan kami dengan menyertakan bukti transfer.</li>
-                        </ol>
-                    </div>
-
-                    {/* Tombol Coba Kembali */}
-                    <button onClick={() => router.push('/renew')} style={retryButtonStyle}>
-                        Coba Pembelian Kembali 🔄
-                    </button>
-
-                    <div style={{ marginTop: 24, textAlign: 'center', borderTop: '1px solid #1f2937', paddingTop: 16 }}>
-                        <a href="/" style={linkStyle}>Kembali ke Beranda</a>
+                    <div style={{ fontSize: 48, marginBottom: 8 }}>❌</div>
+                    <h1 style={titleStyle}>Pembayaran Gagal atau Dibatalkan</h1>
+                    <p style={subtitleStyle}>
+                        Transaksi Anda tidak berhasil diselesaikan. Jangan khawatir, belum ada dana yang terpotong untuk transaksi yang gagal. Silakan coba lagi.
+                    </p>
+                    <a href="/#harga" style={buttonStyle}>🔄 Coba Lagi</a>
+                    <p style={{ textAlign: 'center', fontSize: 12, color: '#64748b', marginTop: 20 }}>
+                        Mengalami kendala berulang?{' '}
+                        <a href={WHATSAPP_LINK(`Halo Admin, saya mengalami kendala pembayaran untuk ${APP_NAME}.`)} target="_blank" rel="noopener noreferrer" style={{ color: '#1d4ed8', fontWeight: 'bold', textDecoration: 'none' }}>
+                            💬 Chat Admin ({WHATSAPP_DISPLAY})
+                        </a>
+                    </p>
+                    <div style={{ textAlign: 'center', marginTop: 16 }}>
+                        <a href="/" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: 12 }}>← Kembali ke Beranda</a>
                     </div>
                 </main>
             </div>
@@ -53,13 +36,8 @@ export default function PaymentFailed() {
     );
 }
 
-// CSS Inline Tema Gelap
-const containerStyle = { background: '#0e1013', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, color: '#f8fafc', fontFamily: 'system-ui, sans-serif' };
-const cardStyle = { background: '#16191f', border: '1px solid #1f2937', padding: '32px 24px', borderRadius: 16, width: '100%', maxWidth: 480, boxSizing: 'border-box' };
-const failedIconStyle = { width: 50, height: 50, background: '#ef4444', color: '#fff', borderRadius: '50%', fontSize: 24, fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto' };
-const titleStyle = { margin: 0, fontSize: 22, fontWeight: 'bold', color: '#fff' };
-const subtitleStyle = { margin: '8px 0 0 0', color: '#ef4444', fontSize: 13, fontWeight: '600' };
-const boxStyle = { background: '#111317', border: '1px solid #1f2937', borderRadius: 12, padding: 16, textAlign: 'center', marginTop: 20 };
-const listStyle = { color: '#cbd5e1', fontSize: 13, paddingLeft: 20, margin: 0, lineHeight: '1.6' };
-const retryButtonStyle = { display: 'block', width: '100%', padding: 12, background: '#1e293b', border: '1px solid #3b82f6', color: '#fff', borderRadius: 8, cursor: 'pointer', fontWeight: 'bold', fontSize: 13, textAlign: 'center', marginTop: 20, boxSizing: 'border-box', transition: '0.2s' };
-const linkStyle = { color: '#94a3b8', textDecoration: 'none', fontSize: 12 };
+const containerStyle = { background: '#f5f8ff', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, color: '#0f172a', fontFamily: "'DM Sans', system-ui, sans-serif" };
+const cardStyle = { background: '#fff', border: '1px solid #e2e8f0', padding: '36px 26px', borderRadius: 20, width: '100%', maxWidth: 440, boxSizing: 'border-box', textAlign: 'center', boxShadow: '0 20px 50px rgba(15,23,42,0.06)' };
+const titleStyle = { margin: '0 0 8px', fontSize: 22, fontWeight: 800, color: '#0f172a', fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif" };
+const subtitleStyle = { margin: '0 0 24px', color: '#475569', fontSize: 13, lineHeight: 1.6 };
+const buttonStyle = { display: 'block', width: '100%', boxSizing: 'border-box', padding: 14, background: '#1d4ed8', color: '#fff', borderRadius: 10, textAlign: 'center', textDecoration: 'none', fontWeight: 'bold', fontSize: 14 };

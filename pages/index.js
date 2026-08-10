@@ -11,116 +11,206 @@ const WHATSAPP_DISPLAY = '0896-2731-2600';
 const WHATSAPP_LINK = (msg) => `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 
 /* =========================================================================
-   DESIGN TOKENS — dark, dominan BIRU
+   DESIGN TOKENS — tema terang, dominan biru (profesional & terpercaya)
    ========================================================================= */
 const COLOR = {
-    bg: '#0a0e1a',
-    bgCard: '#111a2e',
-    bgElevated: '#0d1424',
-    border: '#1e293b',
-    borderAccent: '#2563eb',
-    accent: '#2563eb',
-    accentLight: '#3b82f6',
-    accentSoft: 'rgba(37,99,235,0.12)',
-    primary: '#2563eb',
-    text: '#f8fafc',
-    textMuted: '#94a3b8',
-    textFaint: '#64748b',
+    bg: '#ffffff',
+    bgAlt: '#f5f8ff',
+    bgDark: '#0b1730',
+    card: '#ffffff',
+    border: '#e2e8f0',
+    primary: '#1d4ed8',      // biru utama
+    primaryDark: '#1e3a8a',
+    primaryLight: '#3b82f6',
+    accent: '#0ea5e9',
+    text: '#0f172a',
+    textOnDark: '#f8fafc',
+    textMuted: '#475569',
+    textFaint: '#94a3b8',
+    success: '#16a34a',
     warn: '#f59e0b',
-    danger: '#ef4444',
-    success: '#22c55e',
+    danger: '#dc2626',
 };
 const FONT_HEAD = "'Plus Jakarta Sans', system-ui, sans-serif";
 const FONT_BODY = "'DM Sans', system-ui, sans-serif";
-const MAXW = 1180;
+const MAXW = 1160;
 
 /* =========================================================================
    DATA
    ========================================================================= */
 
-const PACKAGES = [
-    { id: 'monthly', label: 'Bulanan', duration: '30 Hari', price: 'Rp 49.000', priceNote: '/ bulan', desc: 'Cocok untuk coba dulu atau kebutuhan event musiman.' },
-    { id: 'yearly', label: 'Tahunan', duration: '365 Hari', price: 'Rp 299.000', priceNote: '/ tahun', desc: 'Paling hemat untuk trainer & lembaga aktif sepanjang tahun.', popular: true },
-    { id: 'lifetime', label: 'Lifetime', duration: 'Selamanya', price: 'Rp 599.000', priceNote: '/ selamanya', desc: 'Sekali bayar, dipakai selamanya tanpa pikirkan perpanjangan.' },
-];
-
 const PAIN_POINTS = [
-    { icon: '😫', text: 'Desain sertifikat satu-satu di Word/Canva untuk ratusan peserta, buang waktu berjam-jam' },
-    { icon: '✍️', text: 'Copy-paste nama peserta manual satu per satu, rawan typo dan salah kirim' },
-    { icon: '📧', text: 'Kirim sertifikat ke email peserta juga harus manual, satu per satu, semalaman' },
-    { icon: '🕵️', text: 'Sertifikat gampang dipalsukan karena tidak ada cara resmi untuk verifikasi keasliannya' },
+    'Buat 200 sertifikat satu-satu di Word/Canva? Bisa habis seharian penuh cuma untuk edit nama peserta.',
+    'Kirim sertifikat manual lewat email satu per satu — capek, rawan salah kirim ke orang yang salah.',
+    'Peserta ragu keaslian sertifikat karena tidak ada cara memverifikasinya.',
+    'Sudah punya desain sertifikat bagus, tapi tidak tahu cara menyatukannya dengan data peserta secara massal.',
 ];
 
 const FEATURES = [
-    { icon: '🎨', title: 'Template Sertifikat Profesional, Tinggal Pakai', desc: 'Puluhan desain template sertifikat siap pakai dan sepenuhnya editable — sesuaikan logo, warna, dan teks sesuai brand acara atau lembaga Anda.' },
-    { icon: '⚡', title: 'Generate Ratusan Sertifikat dalam Hitungan Menit', desc: 'Cukup import data peserta, satu klik dan ratusan sertifikat langsung jadi — tanpa perlu desain atau ketik manual satu per satu.' },
-    { icon: '📤', title: 'Kirim Massal via Gmail, Sesuai Nama & Email Masing-Masing', desc: 'Satu kali klik, sistem otomatis mengirim sertifikat ke email setiap peserta sesuai nama dan alamat email mereka masing-masing lewat Gmail.' },
-    { icon: '👁️', title: 'Preview Sertifikat Sebelum Generate', desc: 'Lihat dulu hasil jadinya sebelum di-generate massal, supaya tidak ada kesalahan format atau layout yang terlanjur tersebar ke semua peserta.' },
-    { icon: '🔒', title: 'Fitur Barcode untuk Cek Keaslian Sertifikat', desc: 'Setiap sertifikat dilengkapi barcode unik, sehingga penerima maupun pihak ketiga bisa memverifikasi keasliannya kapan saja.' },
-    { icon: '🔢', title: 'Fitur Nomor Urut Sertifikat Otomatis', desc: 'Setiap sertifikat mendapat nomor urut otomatis dan konsisten, memudahkan pengarsipan dan pencarian data di kemudian hari.' },
-    { icon: '🔁', title: 'Export & Import Template Secara Instant', desc: 'Simpan dan pindahkan ratusan template sertifikat profesional antar perangkat atau ke rekan tim hanya dalam sekali proses.' },
+    {
+        icon: '🎨',
+        title: 'Template Sertifikat Profesional, Tinggal Pakai',
+        desc: 'Puluhan template sertifikat siap pakai dan sepenuhnya editable — ganti logo, warna, teks, dan tanda tangan sesuai identitas acara atau institusi Anda.',
+    },
+    {
+        icon: '⚡',
+        title: 'Generate Ratusan Sertifikat dalam Hitungan Menit',
+        desc: 'Import data peserta, klik generate — ratusan sertifikat dengan nama berbeda langsung jadi tanpa perlu edit satu-satu.',
+    },
+    {
+        icon: '📧',
+        title: 'Kirim Massal via Gmail Sekali Klik',
+        desc: 'Setiap peserta otomatis menerima sertifikatnya sendiri ke email masing-masing sesuai nama dan alamat email yang terdaftar — cukup satu kali klik untuk ratusan penerima.',
+    },
+    {
+        icon: '👁️',
+        title: 'Preview Sebelum Generate',
+        desc: 'Lihat dulu hasil akhirnya sebelum diproses massal, jadi tidak ada lagi kesalahan cetak yang baru ketahuan setelah dikirim ke peserta.',
+    },
+    {
+        icon: '🔒',
+        title: 'Fitur Barcode Cek Keaslian Sertifikat',
+        desc: 'Setiap sertifikat dilengkapi barcode unik sehingga penerima maupun pihak ketiga bisa memverifikasi keasliannya kapan saja.',
+    },
+    {
+        icon: '🔢',
+        title: 'Nomor Urut Sertifikat Otomatis',
+        desc: 'Sistem penomoran otomatis dan rapi untuk setiap sertifikat yang diterbitkan, memudahkan pengarsipan dan audit.',
+    },
+    {
+        icon: '📦',
+        title: 'Export & Import Template Secara Instan',
+        desc: 'Simpan ratusan template sertifikat profesional dan pindahkan antar perangkat atau bagikan ke tim dalam hitungan detik.',
+    },
 ];
 
 const HOW_IT_WORKS = [
-    { step: '01', title: 'Pilih atau Import Template', desc: 'Pakai template siap pakai dari CertGen Pro, atau import desain template sertifikat Anda sendiri.' },
-    { step: '02', title: 'Masukkan Data Peserta', desc: 'Input nama, email, dan data peserta lainnya — bisa satu-satu atau import sekaligus dalam jumlah banyak.' },
-    { step: '03', title: 'Preview Sebelum Generate', desc: 'Cek tampilan sertifikat dulu supaya yakin layout dan datanya sudah benar sebelum digenerate massal.' },
-    { step: '04', title: 'Generate Ratusan Sertifikat Sekali Klik', desc: 'Sistem otomatis membuat sertifikat untuk seluruh peserta lengkap dengan nomor urut dan barcode keaslian.' },
-    { step: '05', title: 'Kirim Otomatis via Gmail', desc: 'Kirim seluruh sertifikat ke email masing-masing peserta secara otomatis dalam sekali klik, tanpa kirim manual satu-satu.' },
-];
-
-const GOOD_FOR = [
-    'Penyelenggara webinar, seminar, dan workshop',
-    'Lembaga training & sertifikasi',
-    'Kampus, sekolah, dan bimbingan belajar',
-    'Event organizer dan komunitas',
-    'HRD yang mengelola sertifikat pelatihan karyawan',
-];
-const NOT_FOR = [
-    'Butuh sertifikat fisik / cetak langsung dari aplikasi',
-    'Butuh integrasi ke sistem LMS pihak ketiga secara otomatis',
-    'Mencari aplikasi berbasis web/cloud (ini aplikasi desktop Windows)',
+    {
+        step: '01',
+        title: 'Import Data Peserta',
+        desc: 'Upload daftar nama & email peserta (Excel/CSV), atau input manual langsung di aplikasi.',
+    },
+    {
+        step: '02',
+        title: 'Pilih & Sesuaikan Template',
+        desc: 'Pilih template sertifikat yang tersedia, sesuaikan logo, warna, dan teks sesuai kebutuhan acara Anda.',
+    },
+    {
+        step: '03',
+        title: 'Generate & Kirim Otomatis',
+        desc: 'Preview hasilnya, lalu generate ratusan sertifikat sekaligus dan kirim ke email masing-masing peserta hanya dengan satu klik.',
+    },
 ];
 
 const TESTIMONIALS = [
-    { name: 'Bu Ratna', city: 'Trainer Bersertifikat, Yogyakarta', initials: 'BR', quote: 'Dulu bikin sertifikat 200 peserta pelatihan bisa 2 hari penuh. Sekarang generate dan kirim semua email dalam waktu kurang dari 1 jam.' },
-    { name: 'Pak Andra', city: 'Event Organizer, Jakarta', initials: 'PA', quote: 'Fitur barcode-nya bikin klien lebih percaya karena sertifikatnya bisa dicek keasliannya. Terasa lebih profesional di mata peserta.' },
-    { name: 'Mbak Dinda', city: 'Admin Diklat, Surabaya', initials: 'MD', quote: 'Yang paling membantu itu kirim email massalnya. Nggak perlu lagi kirim satu-satu ke ratusan peserta, tinggal sekali klik selesai semua.' },
-    { name: 'Pak Yusuf', city: 'Ketua Komunitas, Bandung', initials: 'PY', quote: 'Template-nya banyak dan gampang diedit sesuai logo komunitas kami. Peserta juga senang karena sertifikat sudah bernomor urut resmi.' },
+    {
+        name: 'Dedi P.',
+        role: 'Panitia Webinar Nasional',
+        quote: 'Dulu tim saya butuh 2 hari untuk kirim 300 sertifikat peserta webinar. Sekarang selesai kurang dari 1 jam, termasuk kirim emailnya.',
+    },
+    {
+        name: 'Ratna S.',
+        role: 'Staff HRD Perusahaan',
+        quote: 'Fitur barcode-nya bikin sertifikat pelatihan internal kami jadi lebih kredibel. Peserta bisa cek sendiri keasliannya.',
+    },
+    {
+        name: 'Bimo A.',
+        role: 'Pengelola Lembaga Kursus',
+        quote: 'Paling suka bagian nomor urut otomatis — dulu sering keliru dobel nomor waktu bikin manual, sekarang tidak pernah lagi.',
+    },
 ];
 
-const FAQS = [
-    { q: 'Aplikasi ini berjalan di sistem operasi apa?', a: 'CertGen Pro adalah aplikasi desktop yang telah diuji dan berjalan dengan baik di Windows 10 dan Windows 11. Sistem operasi lain seperti macOS atau Linux belum didukung.' },
-    { q: 'Apakah aplikasi ini butuh koneksi internet terus-menerus?', a: 'Tidak. CertGen Pro bisa dipakai sepenuhnya offline untuk membuat template, input data, preview, dan generate sertifikat. Koneksi internet hanya dibutuhkan saat Anda menggunakan fitur kirim sertifikat massal via email ke peserta.' },
-    { q: 'Bagaimana cara saya menerima lisensi setelah membeli?', a: 'Setelah pembayaran berhasil, kode lisensi akan langsung tampil di layar (halaman Thank You) dan otomatis dikirim ke nomor WhatsApp serta alamat email yang Anda daftarkan di form pembelian. Jika email tidak muncul di inbox, cek juga folder SPAM/Promosi.' },
-    { q: 'Format nomor WhatsApp yang benar bagaimana?', a: 'Cukup masukkan nomor dengan awalan 08, contoh: 081234567890. Tidak perlu menuliskan kode negara +62, sistem kami yang akan menyesuaikannya secara otomatis.' },
-    { q: 'Apakah lisensi bisa dipindah ke perangkat/laptop lain?', a: 'Setiap lisensi terkunci untuk 1 (satu) perangkat saja demi keamanan. Jika Anda perlu memindahkan ke perangkat baru, silakan hubungi Admin via WhatsApp untuk dibantu.' },
-    { q: 'Berapa banyak sertifikat yang bisa saya generate dan kirim sekaligus?', a: 'Tidak ada batasan jumlah peserta dari sisi aplikasi — Anda bisa generate ratusan sertifikat sekaligus. Untuk pengiriman email massal, kecepatannya mengikuti batas wajar pengiriman akun Gmail Anda sendiri.' },
-    { q: 'Apa bedanya paket Bulanan, Tahunan, dan Lifetime?', a: 'Ketiganya memberikan akses ke fitur yang sama persis. Bedanya hanya di masa aktif lisensi: Bulanan aktif 30 hari, Tahunan aktif 365 hari (paling hemat per bulannya), dan Lifetime aktif selamanya dengan sekali bayar.' },
-    { q: 'Bagaimana cara memperpanjang (renew) lisensi setelah masa aktif habis?', a: 'Anda bisa memperpanjang kapan saja melalui halaman renew di website ini, termasuk tersedia paket Harian untuk kebutuhan mendesak/uji coba jangka pendek.' },
-    { q: 'Bagaimana cara kerja fitur barcode verifikasi keaslian sertifikat?', a: 'Setiap sertifikat yang digenerate otomatis mendapat barcode unik dan nomor urut. Barcode ini bisa dipindai untuk memastikan sertifikat tersebut memang diterbitkan resmi melalui sistem Anda, bukan hasil pemalsuan.' },
-    { q: 'Apa itu fitur Export & Import Template?', a: 'Fitur ini memungkinkan Anda menyimpan koleksi template sertifikat yang sudah dibuat, lalu memindahkannya ke perangkat lain atau membagikannya ke rekan tim, tanpa perlu desain ulang dari nol.' },
-    { q: 'Bagaimana cara klaim garansi uang kembali?', a: 'Hubungi Admin via WhatsApp maksimal 3 hari kalender sejak pembelian. Tim kami akan membantu troubleshooting terlebih dahulu; jika aplikasi memang tidak bisa berjalan di perangkat Anda, dana akan dikembalikan sesuai ketentuan pada halaman Syarat & Ketentuan.' },
+const PRICING = [
+    {
+        id: 'monthly',
+        label: 'Bulanan',
+        duration: '30 Hari',
+        price: 49000,
+        priceLabel: 'Rp 49.000',
+        desc: 'Fleksibel untuk kebutuhan acara musiman.',
+        cta: 'Paling Fleksibel',
+    },
+    {
+        id: 'yearly',
+        label: 'Tahunan',
+        duration: '365 Hari',
+        price: 299000,
+        priceLabel: 'Rp 299.000',
+        desc: 'Pilihan terbaik untuk penggunaan rutin sepanjang tahun.',
+        popular: true,
+        cta: 'TERBAIK — Hemat',
+    },
+    {
+        id: 'lifetime',
+        label: 'Lifetime',
+        duration: 'Selamanya',
+        price: 599000,
+        priceLabel: 'Rp 599.000',
+        desc: 'Bayar sekali, pakai selamanya tanpa perpanjangan.',
+        cta: 'Akses Selamanya',
+    },
 ];
 
-const REQUIREMENTS = [
-    { icon: '🖥️', label: 'Sistem Operasi', value: 'Windows 10 (64-bit) & Windows 11 (64-bit)', note: 'Sudah teruji berjalan baik. Belum mendukung macOS atau Linux.' },
-    { icon: '📡', label: 'Koneksi Internet', value: 'Hanya untuk kirim email massal', note: 'Membuat template, input data, dan generate sertifikat bisa 100% offline.' },
-    { icon: '💾', label: 'Ruang Penyimpanan', value: 'Minimal 2 GB ruang kosong', note: 'Untuk aplikasi, template, dan hasil sertifikat.' },
-    { icon: '📧', label: 'Akun Gmail', value: 'Diperlukan untuk kirim massal', note: 'Aplikasi mengirim email melalui akun Gmail milik Anda sendiri.' },
+const FAQ = [
+    {
+        q: 'Aplikasi ini berjalan di perangkat apa?',
+        a: `${APP_NAME} adalah aplikasi desktop untuk Windows, dan sudah teruji stabil di Windows 10 maupun Windows 11.`,
+    },
+    {
+        q: 'Apakah aplikasi ini butuh internet terus-menerus?',
+        a: `Tidak. ${APP_NAME} berjalan offline untuk pembuatan template, import data, dan generate sertifikat. Koneksi internet hanya dibutuhkan saat Anda menggunakan fitur kirim email massal ke peserta.`,
+    },
+    {
+        q: 'Bagaimana saya menerima lisensi setelah membeli?',
+        a: 'Kode lisensi akan otomatis dikirim ke nomor WhatsApp dan alamat email yang Anda daftarkan pada form pembelian, biasanya hanya dalam hitungan detik setelah pembayaran berhasil.',
+    },
+    {
+        q: 'Format nomor WhatsApp yang benar seperti apa?',
+        a: 'Gunakan format 08xxxxxxxxxx (diawali angka 0), tanpa kode +62. Sistem kami akan menyesuaikannya secara otomatis di belakang layar.',
+    },
+    {
+        q: 'Berapa perangkat yang bisa memakai 1 lisensi?',
+        a: 'Setiap lisensi terikat ke 1 perangkat (1 lisensi = 1 komputer) untuk menjaga keamanan. Jika perlu memindahkan ke perangkat lain, hubungi admin via WhatsApp.',
+    },
+    {
+        q: 'Apakah bisa membuat template sertifikat sendiri?',
+        a: 'Bisa. Selain template siap pakai, Anda juga bisa mengedit dan menyimpan template kustom Anda sendiri, lalu export/import kapan pun dibutuhkan.',
+    },
+    {
+        q: 'Bagaimana cara memperpanjang lisensi yang sudah kedaluwarsa?',
+        a: 'Anda bisa memperpanjang langsung melalui halaman Perpanjangan Lisensi menggunakan kode lisensi lama Anda, tanpa perlu install ulang aplikasi.',
+    },
+    {
+        q: 'Apakah ada garansi jika aplikasi tidak bisa dipakai?',
+        a: 'Tim kami siap membantu troubleshooting instalasi maupun aktivasi lisensi via WhatsApp. Hubungi admin apabila mengalami kendala teknis.',
+    },
 ];
 
-const GUARANTEE_POINTS = [
-    'Garansi uang kembali 100% selama 3 hari kalender sejak tanggal pembelian.',
-    'Berlaku apabila aplikasi benar-benar tidak dapat dijalankan/digunakan di perangkat Anda, setelah mengikuti petunjuk instalasi.',
-    'Tim kami akan membantu troubleshooting terlebih dahulu sebelum proses refund diproses.',
+const SOCIAL_PROOF_ENDPOINT = '/api/social-proof/recent';
+const SOCIAL_PROOF_FALLBACK = [
+    { name: 'Dedi P.', city: 'Bandung', status: 'Baru saja membeli Paket Tahunan' },
+    { name: 'Ratna S.', city: 'Surabaya', status: 'Baru saja membeli Paket Lifetime' },
+    { name: 'Bimo A.', city: 'Semarang', status: 'Baru saja membeli Paket Bulanan' },
+    { name: 'Wulan T.', city: 'Yogyakarta', status: 'Baru saja membeli Paket Tahunan' },
 ];
-const GUARANTEE_EXCEPTIONS = [
-    'Pengajuan sudah melewati 3 hari sejak tanggal pembelian.',
-    'Hanya karena berubah pikiran setelah membeli.',
-    'Tidak menyukai fitur, tampilan, atau cara kerja aplikasi.',
-    'Kendala dari konfigurasi perangkat, antivirus, akun Gmail pengirim, atau software pihak ketiga di luar kendali kami.',
-];
+
+/* =========================================================================
+   HELPERS
+   ========================================================================= */
+
+// Normalisasi nomor WA dari format lokal 08xxx menjadi 628xxx (dibutuhkan
+// Fonnte/Midtrans di belakang layar). User cukup mengisi 08xxx tanpa +62.
+function normalizeWhatsApp(raw) {
+    let digits = (raw || '').replace(/[^0-9]/g, '');
+    if (!digits) return '';
+    if (digits.startsWith('0')) digits = '62' + digits.slice(1);
+    else if (!digits.startsWith('62')) digits = '62' + digits;
+    return digits;
+}
+
+function formatRupiah(n) {
+    return 'Rp ' + n.toLocaleString('id-ID');
+}
 
 function useReveal() {
     const ref = useRef(null);
@@ -153,14 +243,6 @@ function useNavScroll() {
     return scrolled;
 }
 
-const SOCIAL_PROOF_ENDPOINT = '/api/social-proof/recent';
-const SOCIAL_PROOF_FALLBACK = [
-    { name: 'Bu Ratna', city: 'Yogyakarta', status: 'Pembayaran Terkonfirmasi' },
-    { name: 'Pak Andra', city: 'Jakarta', status: 'Pembayaran Terkonfirmasi' },
-    { name: 'Mbak Dinda', city: 'Surabaya', status: 'Pembayaran Terkonfirmasi' },
-    { name: 'Pak Yusuf', city: 'Bandung', status: 'Pembayaran Terkonfirmasi' },
-];
-
 function useSocialProof() {
     const [items, setItems] = useState(SOCIAL_PROOF_FALLBACK);
     const [index, setIndex] = useState(0);
@@ -173,7 +255,9 @@ function useSocialProof() {
                 if (!cancelled && Array.isArray(data) && data.length > 0) setItems(data);
             })
             .catch(() => {});
-        return () => { cancelled = true; };
+        return () => {
+            cancelled = true;
+        };
     }, []);
 
     useEffect(() => {
@@ -193,6 +277,7 @@ export default function Home() {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
     const [openFaq, setOpenFaq] = useState(null);
+    const [mobileOpen, setMobileOpen] = useState(false);
     const navScrolled = useNavScroll();
 
     async function handleSubmit(e) {
@@ -200,10 +285,11 @@ export default function Home() {
         setLoading(true);
         setMessage('');
         try {
+            const payload = { app_id: APP_ID, ...form, whatsapp: normalizeWhatsApp(form.whatsapp) };
             const res = await fetch('/api/payment/create', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ app_id: APP_ID, ...form }),
+                body: JSON.stringify(payload),
             });
             const data = await res.json();
 
@@ -219,10 +305,18 @@ export default function Home() {
 
             if (window.snap) {
                 window.snap.pay(data.snap_token, {
-                    onSuccess: () => { window.location.href = `/thankyou?license_key=${data.license_key}`; },
-                    onPending: () => setMessage('Pembayaran tertunda. Selesaikan pembayaran untuk menerima lisensi.'),
-                    onError: () => { window.location.href = '/failed'; },
-                    onClose: () => setMessage('Popup pembayaran ditutup.'),
+                    onSuccess: () => {
+                        window.location.href = `/thankyou?license_key=${data.license_key}`;
+                    },
+                    onPending: () => {
+                        setMessage('Pembayaran tertunda. Selesaikan pembayaran untuk menerima lisensi.');
+                    },
+                    onError: () => {
+                        window.location.href = '/failed';
+                    },
+                    onClose: () => {
+                        setMessage('Popup pembayaran ditutup.');
+                    },
                 });
             }
         } catch (err) {
@@ -233,6 +327,7 @@ export default function Home() {
     }
 
     const scrollTo = useCallback((id) => {
+        setMobileOpen(false);
         const el = document.getElementById(id);
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, []);
@@ -243,11 +338,11 @@ export default function Home() {
                 <title>CertGen Pro — Buat & Kirim Ratusan Sertifikat Digital Otomatis</title>
                 <meta
                     name="description"
-                    content="Aplikasi desktop untuk generate ratusan sertifikat digital dalam hitungan menit, kirim otomatis via email sesuai nama peserta, lengkap barcode verifikasi keaslian. Untuk trainer, event organizer, kampus, dan lembaga sertifikasi."
+                    content="Aplikasi desktop untuk generate dan kirim ratusan sertifikat digital secara massal dalam hitungan menit. Template siap pakai, kirim otomatis via email, dan barcode verifikasi keaslian."
                 />
-                <meta name="keywords" content="aplikasi sertifikat digital, generate sertifikat massal, sertifikat online, aplikasi kirim sertifikat email, barcode sertifikat, aplikasi pelatihan sertifikat, CertGen Pro" />
+                <meta name="keywords" content="aplikasi sertifikat massal, generate sertifikat otomatis, kirim sertifikat email massal, aplikasi sertifikat digital, barcode verifikasi sertifikat, software sertifikat pelatihan" />
                 <meta property="og:title" content="CertGen Pro — Buat & Kirim Ratusan Sertifikat Digital Otomatis" />
-                <meta property="og:description" content="Generate ratusan sertifikat digital sekali klik, kirim otomatis ke email peserta, lengkap barcode keaslian." />
+                <meta property="og:description" content="Generate ratusan sertifikat digital dalam hitungan menit, lengkap dengan barcode verifikasi dan pengiriman email otomatis." />
                 <meta property="og:type" content="website" />
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link
@@ -260,8 +355,8 @@ export default function Home() {
                         __html: JSON.stringify({
                             '@context': 'https://schema.org',
                             '@type': 'SoftwareApplication',
-                            name: 'CertGen Pro',
-                            description: 'Aplikasi desktop Windows untuk membuat dan mengirim ratusan sertifikat digital secara massal, lengkap dengan barcode verifikasi keaslian.',
+                            name: APP_NAME,
+                            description: 'Aplikasi desktop Windows untuk membuat dan mengirim sertifikat digital secara massal.',
                             applicationCategory: 'BusinessApplication',
                             offers: { '@type': 'Offer', price: '299000', priceCurrency: 'IDR' },
                         }),
@@ -278,21 +373,24 @@ export default function Home() {
             />
 
             <div style={{ background: COLOR.bg, color: COLOR.text, fontFamily: FONT_BODY, minHeight: '100vh' }}>
-                <Navbar scrolled={navScrolled} scrollTo={scrollTo} />
+                <Navbar scrolled={navScrolled} scrollTo={scrollTo} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
                 <main>
                     <HeroSection scrollTo={scrollTo} />
                     <SocialProofBar />
-                    <PainSection />
+                    <ProblemSolutionSection />
                     <FeaturesSection />
                     <HowItWorksSection />
-                    <MidCTASection scrollTo={scrollTo} />
-                    <GoodForSection />
-                    <RequirementsSection />
+                    <MidCtaBanner scrollTo={scrollTo} />
                     <TestimonialsSection />
-                    <GuaranteeSection />
-                    <PurchaseSection form={form} setForm={setForm} loading={loading} message={message} handleSubmit={handleSubmit} />
-                    <FAQSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
-                    <FinalCTASection scrollTo={scrollTo} />
+                    <PricingSection
+                        form={form}
+                        setForm={setForm}
+                        handleSubmit={handleSubmit}
+                        loading={loading}
+                        message={message}
+                    />
+                    <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
+                    <FinalCtaSection scrollTo={scrollTo} />
                 </main>
                 <Footer />
             </div>
@@ -304,49 +402,77 @@ export default function Home() {
    NAVBAR
    ========================================================================= */
 
-function Navbar({ scrolled, scrollTo }) {
-    const navItems = [
-        { id: 'fitur', label: 'Fitur' },
-        { id: 'cara-kerja', label: 'Cara Kerja' },
-        { id: 'testimoni', label: 'Testimoni' },
-        { id: 'beli', label: 'Harga' },
-        { id: 'faq', label: 'FAQ' },
-    ];
+function Navbar({ scrolled, scrollTo, mobileOpen, setMobileOpen }) {
     return (
         <header
             style={{
-                position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
-                background: scrolled ? 'rgba(10,14,26,0.92)' : 'transparent',
-                backdropFilter: scrolled ? 'blur(10px)' : 'none',
-                borderBottom: scrolled ? `1px solid ${COLOR.border}` : '1px solid transparent',
-                transition: 'all 0.3s ease',
+                position: 'sticky',
+                top: 0,
+                zIndex: 50,
+                background: scrolled ? 'rgba(255,255,255,0.96)' : 'rgba(255,255,255,0.85)',
+                backdropFilter: 'blur(8px)',
+                borderBottom: `1px solid ${COLOR.border}`,
+                transition: '0.2s',
             }}
         >
-            <div style={{ maxWidth: MAXW, margin: '0 auto', padding: '0 20px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ fontFamily: FONT_HEAD, fontWeight: 800, fontSize: 17, display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span>🔷</span> CertGen Pro
+            <div style={{ maxWidth: MAXW, margin: '0 auto', padding: '14px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: FONT_HEAD, fontWeight: 800, fontSize: 19, color: COLOR.primaryDark }}>
+                    <span style={{ width: 30, height: 30, borderRadius: 8, background: COLOR.primary, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15 }}>📜</span>
+                    {APP_NAME}
                 </div>
-                <nav style={{ display: 'none', gap: 28, alignItems: 'center' }} className="desktop-nav">
-                    {navItems.map((item) => (
-                        <a key={item.id} onClick={() => scrollTo(item.id)} style={{ color: COLOR.textMuted, fontSize: 14, fontWeight: 500, cursor: 'pointer' }}>
-                            {item.label}
-                        </a>
-                    ))}
+                <nav style={{ display: 'flex', gap: 24, alignItems: 'center' }} className="desktop-nav">
+                    <NavLink onClick={() => scrollTo('fitur')}>Fitur</NavLink>
+                    <NavLink onClick={() => scrollTo('cara-kerja')}>Cara Kerja</NavLink>
+                    <NavLink onClick={() => scrollTo('harga')}>Harga</NavLink>
+                    <NavLink onClick={() => scrollTo('faq')}>FAQ</NavLink>
+                    <button onClick={() => scrollTo('harga')} style={navCtaStyle}>Beli Sekarang</button>
                 </nav>
-                {/* CTA #1 — di navbar, selalu terlihat */}
                 <button
-                    onClick={() => scrollTo('beli')}
-                    style={{ background: COLOR.accent, color: '#fff', border: 'none', padding: '9px 18px', borderRadius: 8, fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: FONT_BODY }}
+                    onClick={() => setMobileOpen(!mobileOpen)}
+                    style={{ display: 'none', background: 'none', border: 'none', fontSize: 22, cursor: 'pointer', color: COLOR.primaryDark }}
+                    className="mobile-toggle"
                 >
-                    Miliki Lisensi
+                    {mobileOpen ? '✕' : '☰'}
                 </button>
             </div>
+            {mobileOpen && (
+                <div style={{ borderTop: `1px solid ${COLOR.border}`, padding: '12px 20px', display: 'flex', flexDirection: 'column', gap: 12, background: '#fff' }}>
+                    <NavLink onClick={() => scrollTo('fitur')}>Fitur</NavLink>
+                    <NavLink onClick={() => scrollTo('cara-kerja')}>Cara Kerja</NavLink>
+                    <NavLink onClick={() => scrollTo('harga')}>Harga</NavLink>
+                    <NavLink onClick={() => scrollTo('faq')}>FAQ</NavLink>
+                    <button onClick={() => scrollTo('harga')} style={{ ...navCtaStyle, width: '100%' }}>Beli Sekarang</button>
+                </div>
+            )}
             <style jsx>{`
-                @media (min-width: 860px) { .desktop-nav { display: flex !important; } }
+                @media (max-width: 820px) {
+                    .desktop-nav { display: none !important; }
+                    .mobile-toggle { display: block !important; }
+                }
             `}</style>
         </header>
     );
 }
+
+function NavLink({ children, onClick }) {
+    return (
+        <button onClick={onClick} style={{ background: 'none', border: 'none', color: COLOR.textMuted, fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: FONT_BODY }}>
+            {children}
+        </button>
+    );
+}
+
+const navCtaStyle = {
+    background: COLOR.primary,
+    color: '#fff',
+    border: 'none',
+    borderRadius: 8,
+    padding: '10px 18px',
+    fontWeight: 700,
+    fontSize: 13,
+    cursor: 'pointer',
+    fontFamily: FONT_BODY,
+};
 
 /* =========================================================================
    HERO — CTA #1 (AWAL)
@@ -354,82 +480,169 @@ function Navbar({ scrolled, scrollTo }) {
 
 function HeroSection({ scrollTo }) {
     return (
-        <section style={{ padding: '140px 20px 70px', background: `radial-gradient(ellipse at top, rgba(37,99,235,0.16), transparent 60%)` }}>
-            <div style={{ maxWidth: MAXW, margin: '0 auto', textAlign: 'center' }}>
-                <span style={{ background: '#12213f', color: COLOR.accentLight, fontSize: 11, fontWeight: 700, padding: '5px 12px', borderRadius: 20, letterSpacing: '0.05em', display: 'inline-block', marginBottom: 20 }}>
-                    UNTUK TRAINER, EVENT ORGANIZER & LEMBAGA SERTIFIKASI
-                </span>
-                <h1 style={{ fontFamily: FONT_HEAD, fontSize: 'clamp(26px, 4.6vw, 46px)', fontWeight: 800, lineHeight: 1.2, margin: '0 auto 20px', maxWidth: 820 }}>
-                    Masih Bikin Sertifikat Satu-Satu di Word/Canva untuk Ratusan Peserta?
-                </h1>
-                <p style={{ color: COLOR.textMuted, fontSize: 16, lineHeight: 1.7, maxWidth: 640, margin: '0 auto 20px' }}>
-                    Copy-paste nama peserta satu per satu, desain manual berjam-jam, lalu masih harus kirim email satu-satu ke
-                    setiap orang — waktu Anda habis untuk kerjaan yang sebetulnya bisa selesai dalam hitungan menit.
-                </p>
-                <p style={{ color: COLOR.text, fontSize: 16, lineHeight: 1.7, maxWidth: 640, margin: '0 auto 32px', fontWeight: 700 }}>
-                    <span style={{ color: COLOR.accentLight }}>CertGen Pro</span> membuat Anda bisa generate ratusan sertifikat
-                    digital sekali klik, lengkap dengan barcode keaslian dan nomor urut, lalu mengirimkannya otomatis ke email
-                    setiap peserta — tanpa kerja manual satu-satu lagi.
-                </p>
-                <div style={{ display: 'flex', gap: 16, justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
-                    <button
-                        onClick={() => scrollTo('beli')}
-                        style={{ background: COLOR.accent, color: '#fff', border: 'none', padding: '15px 30px', borderRadius: 10, fontWeight: 700, fontSize: 15, cursor: 'pointer', fontFamily: FONT_BODY, boxShadow: '0 8px 25px rgba(37,99,235,0.35)' }}
-                    >
-                        Miliki Lisensi Sekarang ⚡
-                    </button>
-                    <a onClick={() => scrollTo('fitur')} style={{ color: COLOR.accentLight, fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
-                        Lihat semua fitur →
-                    </a>
+        <section style={{ background: `linear-gradient(180deg, ${COLOR.bgAlt} 0%, #fff 100%)`, padding: '64px 20px 56px' }}>
+            <div style={{ maxWidth: MAXW, margin: '0 auto', display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: 48, alignItems: 'center' }} className="hero-grid">
+                <div>
+                    <span style={badgeStyle}>🖥️ APLIKASI DESKTOP WINDOWS</span>
+                    <h1 style={{ fontFamily: FONT_HEAD, fontSize: 42, lineHeight: 1.15, fontWeight: 800, margin: '18px 0', color: COLOR.text }}>
+                        Buat & Kirim <span style={{ color: COLOR.primary }}>Ratusan Sertifikat Digital</span> Tanpa Begadang
+                    </h1>
+                    <p style={{ fontSize: 16, color: COLOR.textMuted, lineHeight: 1.6, maxWidth: 520 }}>
+                        {APP_NAME} membantu panitia acara, HRD, dan pengelola pelatihan membuat serta mengirim ratusan sertifikat ke peserta — lengkap dengan barcode keaslian — hanya dalam hitungan menit, bukan hari.
+                    </p>
+                    <div style={{ display: 'flex', gap: 14, marginTop: 28, flexWrap: 'wrap' }}>
+                        <button onClick={() => scrollTo('harga')} style={heroCtaPrimary}>
+                            🚀 Beli Sekarang — Mulai Rp 49.000
+                        </button>
+                        <button onClick={() => scrollTo('fitur')} style={heroCtaSecondary}>
+                            Lihat Semua Fitur
+                        </button>
+                    </div>
+                    <div style={{ display: 'flex', gap: 20, marginTop: 26, flexWrap: 'wrap' }}>
+                        {['Template siap pakai', 'Kirim email otomatis', 'Barcode anti-palsu'].map((t) => (
+                            <span key={t} style={{ fontSize: 13, color: COLOR.textMuted, display: 'flex', alignItems: 'center', gap: 6 }}>
+                                <span style={{ color: COLOR.success, fontWeight: 800 }}>✓</span> {t}
+                            </span>
+                        ))}
+                    </div>
                 </div>
-                <p style={{ marginTop: 18, fontSize: 13, color: COLOR.textFaint }}>
-                    ✓ Generate ratusan sertifikat dalam hitungan menit &nbsp;·&nbsp; ✓ Kirim otomatis via email &nbsp;·&nbsp; ✓ Barcode verifikasi keaslian
-                </p>
+                <div style={heroMockStyle}>
+                    <div style={{ fontSize: 13, color: COLOR.textFaint, marginBottom: 10, fontWeight: 700 }}>PRATINJAU SERTIFIKAT</div>
+                    <div style={certMockStyle}>
+                        <div style={{ fontSize: 11, color: COLOR.primary, fontWeight: 800, letterSpacing: 1 }}>SERTIFIKAT PENGHARGAAN</div>
+                        <div style={{ fontFamily: FONT_HEAD, fontSize: 22, fontWeight: 800, margin: '14px 0 4px', color: COLOR.text }}>Nama Peserta</div>
+                        <div style={{ fontSize: 11, color: COLOR.textFaint, marginBottom: 18 }}>telah menyelesaikan program dengan baik</div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                            <div style={{ fontSize: 9, color: COLOR.textFaint }}>No. CGP-0001<br/>■■■ ▌│▌▌ ■ (barcode)</div>
+                            <div style={{ fontSize: 9, color: COLOR.textFaint, textAlign: 'right' }}>Ditandatangani<br/>secara digital</div>
+                        </div>
+                    </div>
+                    <div style={{ marginTop: 14, fontSize: 12, color: COLOR.textMuted, textAlign: 'center' }}>200+ sertifikat, generate &amp; terkirim &lt; 5 menit</div>
+                </div>
             </div>
+            <style jsx>{`
+                @media (max-width: 900px) {
+                    .hero-grid { grid-template-columns: 1fr !important; }
+                }
+            `}</style>
         </section>
     );
 }
+
+const badgeStyle = {
+    display: 'inline-block',
+    background: '#dbeafe',
+    color: COLOR.primaryDark,
+    fontSize: 12,
+    fontWeight: 700,
+    padding: '6px 12px',
+    borderRadius: 20,
+};
+
+const heroCtaPrimary = {
+    background: COLOR.primary,
+    color: '#fff',
+    border: 'none',
+    borderRadius: 10,
+    padding: '16px 26px',
+    fontWeight: 800,
+    fontSize: 15,
+    cursor: 'pointer',
+    fontFamily: FONT_BODY,
+    boxShadow: '0 8px 20px rgba(29,78,216,0.28)',
+};
+
+const heroCtaSecondary = {
+    background: '#fff',
+    color: COLOR.primaryDark,
+    border: `1.5px solid ${COLOR.primary}`,
+    borderRadius: 10,
+    padding: '16px 26px',
+    fontWeight: 700,
+    fontSize: 15,
+    cursor: 'pointer',
+    fontFamily: FONT_BODY,
+};
+
+const heroMockStyle = {
+    background: '#fff',
+    border: `1px solid ${COLOR.border}`,
+    borderRadius: 18,
+    padding: 22,
+    boxShadow: '0 20px 50px rgba(15,23,42,0.08)',
+};
+
+const certMockStyle = {
+    background: `linear-gradient(135deg, #eff6ff 0%, #fff 60%)`,
+    border: `2px solid ${COLOR.primary}`,
+    borderRadius: 12,
+    padding: '26px 22px',
+    textAlign: 'center',
+};
 
 /* =========================================================================
    SOCIAL PROOF BAR
    ========================================================================= */
 
 function SocialProofBar() {
-    const latest = useSocialProof();
+    const current = useSocialProof();
     return (
-        <div style={{ borderTop: `1px solid ${COLOR.border}`, borderBottom: `1px solid ${COLOR.border}`, background: COLOR.bgElevated }}>
-            <div style={{ maxWidth: MAXW, margin: '0 auto', padding: '14px 20px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, fontSize: 13, color: COLOR.textMuted, flexWrap: 'wrap', textAlign: 'center' }}>
-                <span style={{ width: 8, height: 8, borderRadius: '50%', background: COLOR.accentLight, display: 'inline-block' }} />
-                <span>
-                    <strong style={{ color: COLOR.text }}>{latest.name}, {latest.city}</strong> baru saja membeli CertGen Pro — {latest.status}
-                </span>
+        <div style={{ background: COLOR.bgDark, padding: '10px 20px', overflow: 'hidden' }}>
+            <div style={{ maxWidth: MAXW, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, fontSize: 13, color: COLOR.textOnDark }}>
+                <span>🛒</span>
+                <span style={{ fontWeight: 700 }}>{current.name}</span>
+                <span style={{ color: COLOR.textFaint }}>· {current.city}</span>
+                <span style={{ color: COLOR.textFaint }}>—</span>
+                <span>{current.status}</span>
+                <span style={{ color: COLOR.success }}>✓</span>
             </div>
         </div>
     );
 }
 
 /* =========================================================================
-   PAIN SECTION
+   PROBLEM -> SOLUTION
    ========================================================================= */
 
-function PainSection() {
+function ProblemSolutionSection() {
     const [ref, visible] = useReveal();
     return (
-        <section ref={ref} style={fadeStyle(visible, { padding: '80px 20px' })}>
-            <div style={{ maxWidth: 820, margin: '0 auto' }}>
-                <div style={{ textAlign: 'center', marginBottom: 40 }}>
-                    <h2 style={h2Style}>Rasanya familiar, kan?</h2>
-                    <p style={{ color: COLOR.textMuted }}>Ini keluhan yang paling sering kami dengar dari trainer & panitia event sebelum pakai CertGen Pro.</p>
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
-                    {PAIN_POINTS.map((p) => (
-                        <div key={p.text} style={{ background: COLOR.bgCard, border: `1px solid ${COLOR.border}`, borderRadius: 14, padding: 20, display: 'flex', gap: 14, alignItems: 'flex-start' }}>
-                            <span style={{ fontSize: 24 }}>{p.icon}</span>
-                            <p style={{ margin: 0, fontSize: 14, color: COLOR.textMuted, lineHeight: 1.6 }}>{p.text}</p>
-                        </div>
-                    ))}
+        <section ref={ref} style={{ padding: '64px 20px', background: '#fff', opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(16px)', transition: '0.5s' }}>
+            <div style={{ maxWidth: MAXW, margin: '0 auto' }}>
+                <SectionHeading eyebrow="MASALAH YANG SERING DIALAMI" title="Bikin Sertifikat Manual Itu Buang-Buang Waktu" center />
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, marginTop: 36 }} className="pain-grid">
+                    <div>
+                        <h3 style={{ fontFamily: FONT_HEAD, fontSize: 16, color: COLOR.danger, marginBottom: 16 }}>😩 Tanpa {APP_NAME}</h3>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
+                            {PAIN_POINTS.map((p) => (
+                                <li key={p} style={{ display: 'flex', gap: 10, fontSize: 14, color: COLOR.textMuted, lineHeight: 1.5 }}>
+                                    <span style={{ color: COLOR.danger }}>✕</span> {p}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    <div style={{ background: COLOR.bgAlt, borderRadius: 16, padding: 24, border: `1px solid ${COLOR.border}` }}>
+                        <h3 style={{ fontFamily: FONT_HEAD, fontSize: 16, color: COLOR.success, marginBottom: 16 }}>🎉 Dengan {APP_NAME}</h3>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
+                            {[
+                                'Generate ratusan sertifikat dari 1 template dalam hitungan menit.',
+                                'Kirim otomatis ke email masing-masing peserta hanya sekali klik.',
+                                'Barcode verifikasi membuat sertifikat lebih kredibel dan sulit dipalsukan.',
+                                'Template tinggal import-export, tidak perlu desain ulang dari nol.',
+                            ].map((p) => (
+                                <li key={p} style={{ display: 'flex', gap: 10, fontSize: 14, color: COLOR.text, lineHeight: 1.5, fontWeight: 500 }}>
+                                    <span style={{ color: COLOR.success }}>✓</span> {p}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
             </div>
+            <style jsx>{`
+                @media (max-width: 820px) {
+                    .pain-grid { grid-template-columns: 1fr !important; }
+                }
+            `}</style>
         </section>
     );
 }
@@ -441,167 +654,87 @@ function PainSection() {
 function FeaturesSection() {
     const [ref, visible] = useReveal();
     return (
-        <section id="fitur" ref={ref} style={fadeStyle(visible, { padding: '80px 20px', background: COLOR.bgElevated })}>
+        <section id="fitur" ref={ref} style={{ padding: '64px 20px', background: COLOR.bgAlt, opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(16px)', transition: '0.5s' }}>
             <div style={{ maxWidth: MAXW, margin: '0 auto' }}>
-                <div style={{ textAlign: 'center', marginBottom: 44 }}>
-                    <h2 style={h2Style}>Semua yang Anda Butuhkan untuk Kelola Sertifikat Massal</h2>
-                    <p style={{ color: COLOR.textMuted, maxWidth: 560, margin: '0 auto' }}>
-                        Dirancang khusus untuk penyelenggara event, trainer, dan lembaga yang menerbitkan sertifikat dalam jumlah besar.
-                    </p>
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 24 }}>
-                    {FEATURES.map((f) => <FeatureCard key={f.title} {...f} />)}
+                <SectionHeading eyebrow="FITUR UNGGULAN" title="Semua yang Anda Butuhkan untuk Sertifikasi Massal" center />
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, marginTop: 40 }} className="feature-grid">
+                    {FEATURES.map((f) => (
+                        <div key={f.title} style={featureCardStyle}>
+                            <div style={{ fontSize: 26, marginBottom: 10 }}>{f.icon}</div>
+                            <h3 style={{ fontFamily: FONT_HEAD, fontSize: 15, fontWeight: 700, margin: '0 0 8px', color: COLOR.text }}>{f.title}</h3>
+                            <p style={{ fontSize: 13, color: COLOR.textMuted, lineHeight: 1.55, margin: 0 }}>{f.desc}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
+            <style jsx>{`
+                @media (max-width: 980px) {
+                    .feature-grid { grid-template-columns: repeat(2, 1fr) !important; }
+                }
+                @media (max-width: 620px) {
+                    .feature-grid { grid-template-columns: 1fr !important; }
+                }
+            `}</style>
         </section>
     );
 }
 
-function FeatureCard({ icon, title, desc }) {
-    const [hovered, setHovered] = useState(false);
-    return (
-        <div
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-            style={{ background: COLOR.bgCard, border: `1px solid ${hovered ? COLOR.accent : COLOR.border}`, borderRadius: 14, padding: 26, transition: 'all 0.25s ease', transform: hovered ? 'translateY(-4px)' : 'none' }}
-        >
-            <div style={{ width: 44, height: 44, borderRadius: 10, background: COLOR.accentSoft, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, marginBottom: 16 }}>
-                {icon}
-            </div>
-            <h3 style={{ fontFamily: FONT_HEAD, fontSize: 15.5, fontWeight: 700, marginBottom: 8 }}>{title}</h3>
-            <p style={{ color: COLOR.textMuted, fontSize: 13.5, lineHeight: 1.65, margin: 0 }}>{desc}</p>
-        </div>
-    );
-}
+const featureCardStyle = {
+    background: '#fff',
+    border: `1px solid ${COLOR.border}`,
+    borderRadius: 14,
+    padding: 22,
+    transition: '0.2s',
+};
 
 /* =========================================================================
-   CARA KERJA
+   HOW IT WORKS
    ========================================================================= */
 
 function HowItWorksSection() {
     const [ref, visible] = useReveal();
     return (
-        <section id="cara-kerja" ref={ref} style={fadeStyle(visible, { padding: '80px 20px' })}>
+        <section id="cara-kerja" ref={ref} style={{ padding: '64px 20px', background: '#fff', opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(16px)', transition: '0.5s' }}>
             <div style={{ maxWidth: MAXW, margin: '0 auto' }}>
-                <div style={{ textAlign: 'center', marginBottom: 44 }}>
-                    <h2 style={h2Style}>Dari Data Peserta Jadi Sertifikat Terkirim, Cuma 5 Langkah</h2>
-                    <p style={{ color: COLOR.textMuted, maxWidth: 560, margin: '0 auto' }}>
-                        Tidak perlu skill desain. Import data, generate, kirim — selesai.
-                    </p>
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 20 }}>
+                <SectionHeading eyebrow="CARA KERJA" title="3 Langkah Sederhana, Selesai dalam Hitungan Menit" center />
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24, marginTop: 40 }} className="how-grid">
                     {HOW_IT_WORKS.map((s) => (
-                        <div key={s.step} style={{ background: COLOR.bgCard, border: `1px solid ${COLOR.border}`, borderRadius: 14, padding: '22px 20px' }}>
-                            <div style={{ fontFamily: FONT_HEAD, fontWeight: 800, fontSize: 22, color: COLOR.accentLight, marginBottom: 10 }}>{s.step}</div>
-                            <h3 style={{ fontFamily: FONT_HEAD, fontSize: 14.5, fontWeight: 700, marginBottom: 8 }}>{s.title}</h3>
-                            <p style={{ color: COLOR.textMuted, fontSize: 13, lineHeight: 1.65, margin: 0 }}>{s.desc}</p>
+                        <div key={s.step} style={{ textAlign: 'center', padding: 20 }}>
+                            <div style={{ width: 52, height: 52, borderRadius: '50%', background: COLOR.primary, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 18, margin: '0 auto 16px', fontFamily: FONT_HEAD }}>
+                                {s.step}
+                            </div>
+                            <h3 style={{ fontFamily: FONT_HEAD, fontSize: 16, fontWeight: 700, margin: '0 0 8px' }}>{s.title}</h3>
+                            <p style={{ fontSize: 13, color: COLOR.textMuted, lineHeight: 1.55, margin: 0 }}>{s.desc}</p>
                         </div>
                     ))}
                 </div>
             </div>
+            <style jsx>{`
+                @media (max-width: 820px) {
+                    .how-grid { grid-template-columns: 1fr !important; }
+                }
+            `}</style>
         </section>
     );
 }
 
 /* =========================================================================
-   MID CTA — CTA #2 (TENGAH)
+   MID CTA BANNER — CTA #2 (TENGAH)
    ========================================================================= */
 
-function MidCTASection({ scrollTo }) {
-    const [ref, visible] = useReveal();
+function MidCtaBanner({ scrollTo }) {
     return (
-        <section ref={ref} style={fadeStyle(visible, { padding: '60px 20px' })}>
-            <div
-                style={{
-                    maxWidth: 900, margin: '0 auto', background: `linear-gradient(135deg, ${COLOR.accent}, #1d4ed8)`,
-                    borderRadius: 20, padding: '44px 32px', textAlign: 'center', boxShadow: '0 20px 50px rgba(37,99,235,0.25)',
-                }}
-            >
-                <h2 style={{ fontFamily: FONT_HEAD, fontSize: 'clamp(20px, 3vw, 28px)', fontWeight: 800, color: '#fff', marginBottom: 12 }}>
-                    Berhenti Kirim Sertifikat Satu-Satu Mulai Sekarang
-                </h2>
-                <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: 14.5, marginBottom: 24, maxWidth: 560, marginLeft: 'auto', marginRight: 'auto' }}>
-                    Ratusan peserta, satu kali klik. CertGen Pro sudah dipakai puluhan trainer dan panitia event di seluruh Indonesia.
-                </p>
-                <button
-                    onClick={() => scrollTo('beli')}
-                    style={{ background: '#fff', color: COLOR.accent, border: 'none', padding: '14px 30px', borderRadius: 10, fontWeight: 800, fontSize: 14.5, cursor: 'pointer', fontFamily: FONT_BODY }}
-                >
+        <section style={{ background: `linear-gradient(135deg, ${COLOR.primaryDark} 0%, ${COLOR.primary} 100%)`, padding: '48px 20px' }}>
+            <div style={{ maxWidth: MAXW, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 20 }}>
+                <div>
+                    <h2 style={{ fontFamily: FONT_HEAD, fontSize: 24, fontWeight: 800, color: '#fff', margin: 0 }}>
+                        Siap hemat waktu buat sertifikat acara berikutnya?
+                    </h2>
+                    <p style={{ color: '#dbeafe', fontSize: 14, marginTop: 8 }}>Mulai dari Rp 49.000/bulan — aktivasi instan setelah pembayaran.</p>
+                </div>
+                <button onClick={() => scrollTo('harga')} style={{ background: '#fff', color: COLOR.primaryDark, border: 'none', borderRadius: 10, padding: '15px 28px', fontWeight: 800, fontSize: 14, cursor: 'pointer', whiteSpace: 'nowrap', fontFamily: FONT_BODY }}>
                     Lihat Paket Harga →
                 </button>
-            </div>
-        </section>
-    );
-}
-
-/* =========================================================================
-   GOOD FOR / LIMITATION
-   ========================================================================= */
-
-function GoodForSection() {
-    const [ref, visible] = useReveal();
-    return (
-        <section ref={ref} style={fadeStyle(visible, { padding: '80px 20px', background: COLOR.bgElevated })}>
-            <div style={{ maxWidth: MAXW, margin: '0 auto' }}>
-                <div style={{ textAlign: 'center', marginBottom: 40 }}>
-                    <h2 style={h2Style}>Supaya Ekspektasi Anda Tepat Sejak Awal</h2>
-                    <p style={{ color: COLOR.textMuted }}>Kami transparan soal siapa yang paling cocok pakai aplikasi ini.</p>
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 20 }} className="two-col-equal">
-                    <div style={{ background: COLOR.accentSoft, border: `1px solid ${COLOR.borderAccent}`, borderRadius: 14, padding: 24 }}>
-                        <h3 style={{ color: COLOR.accentLight, fontFamily: FONT_HEAD, fontSize: 15, marginBottom: 14 }}>✓ Cocok Untuk</h3>
-                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
-                            {GOOD_FOR.map((item) => (
-                                <li key={item} style={{ fontSize: 13.5, color: COLOR.text, display: 'flex', gap: 8 }}>
-                                    <span style={{ color: COLOR.accentLight }}>✓</span> {item}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                    <div style={{ background: 'rgba(239,68,68,0.05)', border: `1px solid #7f1d1d`, borderRadius: 14, padding: 24 }}>
-                        <h3 style={{ color: '#f87171', fontFamily: FONT_HEAD, fontSize: 15, marginBottom: 14 }}>✕ Bukan Untuk</h3>
-                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
-                            {NOT_FOR.map((item) => (
-                                <li key={item} style={{ fontSize: 13.5, color: COLOR.textMuted, display: 'flex', gap: 8 }}>
-                                    <span style={{ color: '#f87171' }}>✕</span> {item}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-                <style jsx>{`
-                    @media (min-width: 700px) { .two-col-equal { grid-template-columns: 1fr 1fr !important; } }
-                `}</style>
-            </div>
-        </section>
-    );
-}
-
-/* =========================================================================
-   SYSTEM REQUIREMENTS
-   ========================================================================= */
-
-function RequirementsSection() {
-    const [ref, visible] = useReveal();
-    return (
-        <section ref={ref} style={fadeStyle(visible, { padding: '80px 20px' })}>
-            <div style={{ maxWidth: MAXW, margin: '0 auto' }}>
-                <div style={{ textAlign: 'center', marginBottom: 40 }}>
-                    <h2 style={h2Style}>Perangkat yang Dibutuhkan</h2>
-                    <p style={{ color: COLOR.textMuted, maxWidth: 560, margin: '0 auto' }}>
-                        Ringan dan bisa langsung dipakai di laptop/PC kantoran standar.
-                    </p>
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 18 }}>
-                    {REQUIREMENTS.map((r) => (
-                        <div key={r.label} style={{ background: COLOR.bgCard, border: `1px solid ${COLOR.border}`, borderRadius: 14, padding: 22, textAlign: 'center' }}>
-                            <div style={{ fontSize: 26, marginBottom: 10 }}>{r.icon}</div>
-                            <div style={{ fontFamily: FONT_HEAD, fontWeight: 700, fontSize: 13, color: COLOR.textMuted, marginBottom: 6 }}>{r.label}</div>
-                            <div style={{ fontSize: 14, fontWeight: 700, color: COLOR.text, marginBottom: 6 }}>{r.value}</div>
-                            <div style={{ fontSize: 11.5, color: COLOR.textFaint, lineHeight: 1.5 }}>{r.note}</div>
-                        </div>
-                    ))}
-                </div>
             </div>
         </section>
     );
@@ -614,216 +747,238 @@ function RequirementsSection() {
 function TestimonialsSection() {
     const [ref, visible] = useReveal();
     return (
-        <section id="testimoni" ref={ref} style={fadeStyle(visible, { padding: '80px 20px', background: COLOR.bgElevated })}>
+        <section ref={ref} style={{ padding: '64px 20px', background: COLOR.bgAlt, opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(16px)', transition: '0.5s' }}>
             <div style={{ maxWidth: MAXW, margin: '0 auto' }}>
-                <div style={{ textAlign: 'center', marginBottom: 40 }}>
-                    <h2 style={h2Style}>Apa Kata Mereka yang Sudah Pakai</h2>
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 20 }}>
+                <SectionHeading eyebrow="KATA PENGGUNA" title="Dipercaya Panitia Acara & Tim HRD" center />
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, marginTop: 36 }} className="testi-grid">
                     {TESTIMONIALS.map((t) => (
-                        <div key={t.name} style={{ background: COLOR.bgCard, border: `1px solid ${COLOR.border}`, borderRadius: 14, padding: 22 }}>
-                            <p style={{ color: COLOR.text, fontSize: 13.5, lineHeight: 1.7, marginBottom: 18 }}>&ldquo;{t.quote}&rdquo;</p>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                                <div style={{ width: 36, height: 36, borderRadius: '50%', background: COLOR.accent, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 13 }}>
-                                    {t.initials}
-                                </div>
-                                <div>
-                                    <div style={{ fontWeight: 700, fontSize: 13 }}>{t.name}</div>
-                                    <div style={{ color: COLOR.textFaint, fontSize: 11.5 }}>{t.city}</div>
-                                </div>
-                            </div>
+                        <div key={t.name} style={{ background: '#fff', border: `1px solid ${COLOR.border}`, borderRadius: 14, padding: 22 }}>
+                            <div style={{ color: COLOR.warn, fontSize: 14, marginBottom: 10 }}>★★★★★</div>
+                            <p style={{ fontSize: 13, color: COLOR.text, lineHeight: 1.6, margin: '0 0 16px' }}>&ldquo;{t.quote}&rdquo;</p>
+                            <div style={{ fontSize: 13, fontWeight: 700 }}>{t.name}</div>
+                            <div style={{ fontSize: 12, color: COLOR.textFaint }}>{t.role}</div>
                         </div>
                     ))}
                 </div>
             </div>
-        </section>
-    );
-}
-
-/* =========================================================================
-   GARANSI
-   ========================================================================= */
-
-function GuaranteeSection() {
-    const [ref, visible] = useReveal();
-    return (
-        <section id="garansi" ref={ref} style={fadeStyle(visible, { padding: '80px 20px' })}>
-            <div style={{ maxWidth: 820, margin: '0 auto' }}>
-                <div style={{ background: COLOR.accentSoft, border: `1px solid ${COLOR.borderAccent}`, borderRadius: 18, padding: '36px 28px', display: 'grid', gridTemplateColumns: '1fr', gap: 28 }} className="two-col-equal">
-                    <div>
-                        <span style={{ fontSize: 30 }}>🛡️</span>
-                        <h2 style={{ ...h2Style, textAlign: 'left', marginTop: 10 }}>Garansi Uang Kembali 3 Hari</h2>
-                        <p style={{ color: COLOR.textMuted, lineHeight: 1.75, fontSize: 13.5, marginBottom: 16 }}>
-                            Belanja tenang. Kalau aplikasi benar-benar tidak bisa dijalankan di perangkat Anda setelah mengikuti
-                            petunjuk instalasi, kami bantu troubleshoot dulu — dan dana bisa dikembalikan sesuai ketentuan.
-                        </p>
-                        <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 16px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                            {GUARANTEE_POINTS.map((p) => (
-                                <li key={p} style={{ fontSize: 13, color: COLOR.text, display: 'flex', gap: 8, lineHeight: 1.6 }}>
-                                    <span style={{ color: COLOR.accentLight, flexShrink: 0 }}>✓</span> {p}
-                                </li>
-                            ))}
-                        </ul>
-                        <a href={WHATSAPP_LINK('Halo Admin, saya ingin bertanya soal garansi uang kembali CertGen Pro.')} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: COLOR.success, fontWeight: 700, fontSize: 13, textDecoration: 'none' }}>
-                            💬 Tanya Admin soal garansi via WhatsApp ({WHATSAPP_DISPLAY})
-                        </a>
-                    </div>
-                    <div>
-                        <h3 style={{ fontFamily: FONT_HEAD, fontSize: 13.5, color: '#f87171', marginBottom: 12 }}>Garansi tidak berlaku apabila:</h3>
-                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                            {GUARANTEE_EXCEPTIONS.map((p) => (
-                                <li key={p} style={{ fontSize: 12.5, color: COLOR.textMuted, display: 'flex', gap: 8, lineHeight: 1.6 }}>
-                                    <span style={{ color: '#f87171', flexShrink: 0 }}>✕</span> {p}
-                                </li>
-                            ))}
-                        </ul>
-                        <p style={{ fontSize: 11.5, color: COLOR.textFaint, marginTop: 14, lineHeight: 1.6 }}>
-                            Detail lengkap lihat halaman <a onClick={() => window.open('/terms', '_blank')} style={{ color: COLOR.accentLight, cursor: 'pointer' }}>Syarat &amp; Ketentuan</a>.
-                        </p>
-                    </div>
-                </div>
-                <style jsx>{`
-                    @media (min-width: 700px) { .two-col-equal { grid-template-columns: 1.1fr 0.9fr !important; } }
-                `}</style>
-            </div>
-        </section>
-    );
-}
-
-/* =========================================================================
-   PURCHASE SECTION — CTA #3 (paket harga + form beli)
-   ========================================================================= */
-
-function PurchaseSection({ form, setForm, loading, message, handleSubmit }) {
-    const [ref, visible] = useReveal();
-    return (
-        <section id="beli" ref={ref} style={fadeStyle(visible, { padding: '80px 20px' })}>
-            <div style={{ maxWidth: 620, margin: '0 auto' }}>
-                <div style={{ textAlign: 'center', marginBottom: 32 }}>
-                    <span style={badgeStyle}>PILIH PAKET LISENSI</span>
-                    <h1 style={{ ...h2Style, marginTop: 10 }}>🔷 {APP_NAME}</h1>
-                    <p style={subtitleStyle}>Generate & kirim ratusan sertifikat digital secara massal, dalam hitungan menit.</p>
-                </div>
-
-                {/* Grid Pilihan Paket */}
-                <div style={pkgGridStyle} className="pkg-grid">
-                    {PACKAGES.map((pkg) => {
-                        const isSelected = form.package_type === pkg.id;
-                        return (
-                            <div
-                                key={pkg.id}
-                                onClick={() => setForm({ ...form, package_type: pkg.id })}
-                                style={{ ...pkgCardStyle, borderColor: isSelected ? COLOR.accent : COLOR.border, background: isSelected ? '#132038' : COLOR.bgElevated }}
-                            >
-                                {pkg.popular && <span style={popularBadgeStyle}>TERPOPULER</span>}
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                                    <h3 style={{ margin: 0, color: '#fff', fontSize: 15 }}>{pkg.label}</h3>
-                                    <span style={{ fontSize: 11, color: COLOR.accentLight, fontWeight: 'bold' }}>{pkg.duration}</span>
-                                </div>
-                                <h4 style={{ margin: '8px 0 4px', fontSize: 20, fontWeight: 'bold', color: isSelected ? COLOR.accentLight : '#fff' }}>
-                                    {pkg.price} <span style={{ fontSize: 11, color: COLOR.textFaint, fontWeight: 500 }}>{pkg.priceNote}</span>
-                                </h4>
-                                <p style={{ margin: 0, fontSize: 11.5, color: COLOR.textMuted, lineHeight: 1.4 }}>{pkg.desc}</p>
-                            </div>
-                        );
-                    })}
-                </div>
-
-                <main style={cardStyle}>
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                        <div>
-                            <label style={labelStyle}>Alamat Email</label>
-                            <input type="email" required placeholder="nama@email.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} style={inputStyle} />
-                        </div>
-
-                        <div>
-                            <label style={labelStyle}>Nomor WhatsApp (format: 08xxx, tanpa +62)</label>
-                            <input type="text" placeholder="081234567890" value={form.whatsapp} onChange={(e) => setForm({ ...form, whatsapp: e.target.value })} style={inputStyle} />
-                        </div>
-
-                        <div>
-                            <label style={labelStyle}>Kode Kupon (Opsional)</label>
-                            <input type="text" placeholder="MASUKKAN_KODE_DISINI" value={form.coupon_code} onChange={(e) => setForm({ ...form, coupon_code: e.target.value })} style={inputStyle} />
-                        </div>
-
-                        <button type="submit" disabled={loading} style={buttonStyle}>
-                            {loading ? 'Memproses Sesi...' : 'Miliki Lisensi Sekarang ⚡'}
-                        </button>
-                        <p style={{ textAlign: 'center', fontSize: 11.5, color: '#64748b', margin: 0 }}>
-                            ✓ Lisensi terkirim otomatis via WhatsApp & Email &nbsp;·&nbsp; ✓ Garansi 3 hari
-                        </p>
-                    </form>
-
-                    {message && <p style={messageStyle}>{message}</p>}
-
-                    <p style={{ textAlign: 'center', fontSize: 12, color: COLOR.textFaint, marginTop: 18 }}>
-                        Ada pertanyaan sebelum membeli?{' '}
-                        <a href={WHATSAPP_LINK('Halo Admin, saya ingin bertanya tentang CertGen Pro sebelum membeli.')} target="_blank" rel="noopener noreferrer" style={{ color: COLOR.success, fontWeight: 700, textDecoration: 'none' }}>
-                            💬 Chat Admin via WhatsApp
-                        </a>
-                    </p>
-                    <p style={{ textAlign: 'center', fontSize: 11.5, color: COLOR.textFaint, marginTop: 8 }}>
-                        Sudah punya lisensi dan mau perpanjang? <a href="/renew" style={{ color: COLOR.accentLight }}>Klik di sini</a>.
-                    </p>
-                </main>
-            </div>
             <style jsx>{`
-                .pkg-grid { grid-template-columns: 1fr; }
-                @media (min-width: 640px) { .pkg-grid { grid-template-columns: repeat(3, 1fr) !important; } }
+                @media (max-width: 820px) {
+                    .testi-grid { grid-template-columns: 1fr !important; }
+                }
             `}</style>
         </section>
     );
 }
 
 /* =========================================================================
+   PRICING + ORDER FORM
+   ========================================================================= */
+
+function PricingSection({ form, setForm, handleSubmit, loading, message }) {
+    const [ref, visible] = useReveal();
+    return (
+        <section id="harga" ref={ref} style={{ padding: '64px 20px', background: '#fff', opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(16px)', transition: '0.5s' }}>
+            <div style={{ maxWidth: MAXW, margin: '0 auto' }}>
+                <SectionHeading eyebrow="PILIH PAKET LISENSI" title="Investasi yang Sepadan dengan Waktu yang Anda Hemat" center />
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, marginTop: 40 }} className="pricing-grid">
+                    {PRICING.map((pkg) => {
+                        const isSelected = form.package_type === pkg.id;
+                        return (
+                            <div
+                                key={pkg.id}
+                                onClick={() => setForm({ ...form, package_type: pkg.id })}
+                                style={{
+                                    ...pricingCardStyle,
+                                    borderColor: isSelected ? COLOR.primary : COLOR.border,
+                                    boxShadow: isSelected ? '0 12px 28px rgba(29,78,216,0.18)' : 'none',
+                                    transform: pkg.popular ? 'translateY(-6px)' : 'none',
+                                }}
+                            >
+                                {pkg.popular && <span style={popularBadge}>PALING POPULER</span>}
+                                <div style={{ fontSize: 12, fontWeight: 700, color: COLOR.primary, letterSpacing: 1 }}>{pkg.cta.toUpperCase()}</div>
+                                <h3 style={{ fontFamily: FONT_HEAD, fontSize: 18, fontWeight: 800, margin: '10px 0 0' }}>{pkg.label}</h3>
+                                <div style={{ fontSize: 12, color: COLOR.textFaint, marginBottom: 12 }}>{pkg.duration}</div>
+                                <div style={{ fontFamily: FONT_HEAD, fontSize: 30, fontWeight: 800, color: isSelected ? COLOR.primary : COLOR.text }}>{pkg.priceLabel}</div>
+                                <p style={{ fontSize: 13, color: COLOR.textMuted, marginTop: 10, lineHeight: 1.5 }}>{pkg.desc}</p>
+                                <div style={{ marginTop: 14, display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, fontWeight: 700, color: isSelected ? COLOR.primary : COLOR.textFaint }}>
+                                    <span style={{ width: 18, height: 18, borderRadius: '50%', border: `2px solid ${isSelected ? COLOR.primary : COLOR.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        {isSelected && <span style={{ width: 9, height: 9, borderRadius: '50%', background: COLOR.primary }} />}
+                                    </span>
+                                    {isSelected ? 'Paket Dipilih' : 'Pilih Paket Ini'}
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+
+                <p style={{ textAlign: 'center', fontSize: 13, color: COLOR.textFaint, marginTop: 20 }}>
+                    Sudah punya lisensi dan ingin perpanjang? <a href="/renew" style={{ color: COLOR.primary, fontWeight: 700 }}>Kunjungi halaman Perpanjangan Lisensi →</a>
+                </p>
+
+                {/* Form pembelian */}
+                <div style={orderFormWrapStyle}>
+                    <h3 style={{ fontFamily: FONT_HEAD, fontSize: 18, fontWeight: 800, textAlign: 'center', margin: '0 0 6px' }}>Lengkapi Data untuk Aktivasi</h3>
+                    <p style={{ textAlign: 'center', fontSize: 13, color: COLOR.textMuted, margin: '0 0 24px' }}>
+                        Lisensi akan dikirim otomatis ke WhatsApp &amp; email di bawah ini.
+                    </p>
+                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14, maxWidth: 460, margin: '0 auto' }}>
+                        <div>
+                            <label style={labelStyle}>Alamat Email</label>
+                            <input
+                                type="email"
+                                required
+                                placeholder="nama@email.com"
+                                value={form.email}
+                                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                                style={inputStyle}
+                            />
+                        </div>
+                        <div>
+                            <label style={labelStyle}>Nomor WhatsApp (format: 08xxxxxxxxxx)</label>
+                            <input
+                                type="text"
+                                required
+                                placeholder="08123456789"
+                                value={form.whatsapp}
+                                onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
+                                style={inputStyle}
+                            />
+                            <p style={{ fontSize: 11, color: COLOR.textFaint, margin: '4px 0 0' }}>Cukup pakai awalan 0, tanpa +62 — biar tidak membingungkan.</p>
+                        </div>
+                        <div>
+                            <label style={labelStyle}>Kode Kupon (Opsional)</label>
+                            <input
+                                type="text"
+                                placeholder="KUPON_DISKON"
+                                value={form.coupon_code}
+                                onChange={(e) => setForm({ ...form, coupon_code: e.target.value })}
+                                style={inputStyle}
+                            />
+                        </div>
+                        <button type="submit" disabled={loading} style={buyButtonStyle}>
+                            {loading ? 'Memproses...' : `💳 Bayar ${formatRupiah(PRICING.find((p) => p.id === form.package_type)?.price || 0)} Sekarang`}
+                        </button>
+                    </form>
+                    {message && <p style={messageStyle}>{message}</p>}
+                    <p style={{ textAlign: 'center', fontSize: 12, color: COLOR.textFaint, marginTop: 16 }}>
+                        Butuh bantuan pembayaran?{' '}
+                        <a href={WHATSAPP_LINK(`Halo Admin, saya butuh bantuan pembelian lisensi ${APP_NAME}.`)} target="_blank" rel="noopener noreferrer" style={{ color: COLOR.primary, fontWeight: 700, textDecoration: 'none' }}>
+                            💬 Chat Admin ({WHATSAPP_DISPLAY})
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <style jsx>{`
+                @media (max-width: 900px) {
+                    .pricing-grid { grid-template-columns: 1fr !important; }
+                }
+            `}</style>
+        </section>
+    );
+}
+
+const pricingCardStyle = {
+    background: '#fff',
+    border: '2px solid',
+    borderRadius: 16,
+    padding: 26,
+    cursor: 'pointer',
+    position: 'relative',
+    transition: '0.2s',
+};
+
+const popularBadge = {
+    position: 'absolute',
+    top: -12,
+    right: 20,
+    background: COLOR.primary,
+    color: '#fff',
+    fontSize: 10,
+    fontWeight: 800,
+    padding: '4px 10px',
+    borderRadius: 6,
+};
+
+const orderFormWrapStyle = {
+    marginTop: 56,
+    background: COLOR.bgAlt,
+    border: `1px solid ${COLOR.border}`,
+    borderRadius: 20,
+    padding: '36px 24px',
+};
+
+const labelStyle = { display: 'block', fontSize: 12, fontWeight: 700, color: COLOR.textMuted, marginBottom: 6 };
+const inputStyle = { display: 'block', width: '100%', padding: 12, background: '#fff', border: `1px solid ${COLOR.border}`, borderRadius: 8, color: COLOR.text, fontSize: 14, boxSizing: 'border-box' };
+const buyButtonStyle = {
+    width: '100%',
+    padding: 15,
+    background: COLOR.primary,
+    color: '#fff',
+    border: 'none',
+    borderRadius: 10,
+    cursor: 'pointer',
+    fontWeight: 800,
+    fontSize: 15,
+    marginTop: 6,
+    fontFamily: FONT_BODY,
+    boxShadow: '0 8px 20px rgba(29,78,216,0.25)',
+};
+const messageStyle = { marginTop: 16, padding: 10, background: '#fff', border: `1px solid ${COLOR.border}`, borderRadius: 8, fontSize: 12, color: COLOR.textMuted, textAlign: 'center', lineHeight: 1.5, maxWidth: 460, margin: '16px auto 0' };
+
+/* =========================================================================
    FAQ
    ========================================================================= */
 
-function FAQSection({ openFaq, setOpenFaq }) {
+function FaqSection({ openFaq, setOpenFaq }) {
+    const [ref, visible] = useReveal();
     return (
-        <section id="faq" style={{ padding: '80px 20px', background: COLOR.bgElevated }}>
-            <div style={{ maxWidth: 720, margin: '0 auto' }}>
-                <h2 style={{ ...h2Style, textAlign: 'center', marginBottom: 36 }}>Pertanyaan yang Sering Ditanya</h2>
-                {FAQS.map((faq, i) => (
-                    <div key={faq.q} style={{ borderBottom: `1px solid ${COLOR.border}` }}>
-                        <button
-                            onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                            style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: '20px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 16, cursor: 'pointer', fontFamily: FONT_BODY, fontWeight: 700, fontSize: 14, color: COLOR.text }}
-                        >
-                            {faq.q}
-                            <span style={{ color: COLOR.accentLight, fontSize: 20, transform: openFaq === i ? 'rotate(45deg)' : 'none', transition: 'transform 0.3s', flexShrink: 0 }}>+</span>
-                        </button>
-                        <div style={{ maxHeight: openFaq === i ? 260 : 0, overflow: 'hidden', transition: 'max-height 0.4s ease' }}>
-                            <p style={{ paddingBottom: 18, color: COLOR.textMuted, lineHeight: 1.7, fontSize: 13.5, margin: 0 }}>{faq.a}</p>
-                        </div>
-                    </div>
-                ))}
+        <section id="faq" ref={ref} style={{ padding: '64px 20px', background: COLOR.bgAlt, opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(16px)', transition: '0.5s' }}>
+            <div style={{ maxWidth: 800, margin: '0 auto' }}>
+                <SectionHeading eyebrow="PERTANYAAN UMUM" title="Masih Ada yang Ingin Ditanyakan?" center />
+                <div style={{ marginTop: 32, display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    {FAQ.map((item, i) => {
+                        const open = openFaq === i;
+                        return (
+                            <div key={item.q} style={{ background: '#fff', border: `1px solid ${COLOR.border}`, borderRadius: 12, overflow: 'hidden' }}>
+                                <button
+                                    onClick={() => setOpenFaq(open ? null : i)}
+                                    style={{ width: '100%', textAlign: 'left', padding: '16px 18px', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontFamily: FONT_BODY }}
+                                >
+                                    <span style={{ fontSize: 14, fontWeight: 700, color: COLOR.text }}>{item.q}</span>
+                                    <span style={{ color: COLOR.primary, fontSize: 18, fontWeight: 800 }}>{open ? '−' : '+'}</span>
+                                </button>
+                                {open && (
+                                    <div style={{ padding: '0 18px 16px', fontSize: 13, color: COLOR.textMuted, lineHeight: 1.6 }}>
+                                        {item.a}
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
         </section>
     );
 }
 
 /* =========================================================================
-   FINAL CTA — CTA #4 (AKHIR, tambahan penguat setelah FAQ)
+   FINAL CTA — CTA #3 (AKHIR)
    ========================================================================= */
 
-function FinalCTASection({ scrollTo }) {
+function FinalCtaSection({ scrollTo }) {
     return (
-        <section style={{ padding: '80px 20px', textAlign: 'center' }}>
-            <div style={{ maxWidth: 620, margin: '0 auto' }}>
-                <h2 style={h2Style}>Mulai Kelola Sertifikat Digital Anda Hari Ini</h2>
-                <p style={{ color: COLOR.textMuted, marginBottom: 28 }}>
-                    Ratusan sertifikat siap kirim, tanpa kerja manual satu-satu lagi.
+        <section style={{ padding: '72px 20px', background: `linear-gradient(135deg, ${COLOR.primaryDark} 0%, ${COLOR.primary} 100%)`, textAlign: 'center' }}>
+            <div style={{ maxWidth: 640, margin: '0 auto' }}>
+                <h2 style={{ fontFamily: FONT_HEAD, fontSize: 30, fontWeight: 800, color: '#fff', margin: '0 0 12px' }}>
+                    Berhenti Buat Sertifikat Satu-Satu Mulai Hari Ini
+                </h2>
+                <p style={{ color: '#dbeafe', fontSize: 15, lineHeight: 1.6, marginBottom: 28 }}>
+                    Gabung bersama panitia acara, tim HRD, dan pengelola pelatihan yang sudah menghemat puluhan jam kerja dengan {APP_NAME}.
                 </p>
-                <button
-                    onClick={() => scrollTo('beli')}
-                    style={{ background: COLOR.accent, color: '#fff', border: 'none', padding: '16px 34px', borderRadius: 10, fontWeight: 700, fontSize: 15, cursor: 'pointer', fontFamily: FONT_BODY, boxShadow: '0 8px 25px rgba(37,99,235,0.3)' }}
-                >
-                    Miliki Lisensi Sekarang ⚡
+                <button onClick={() => scrollTo('harga')} style={{ background: '#fff', color: COLOR.primaryDark, border: 'none', borderRadius: 10, padding: '17px 32px', fontWeight: 800, fontSize: 15, cursor: 'pointer', fontFamily: FONT_BODY }}>
+                    🚀 Mulai Sekarang — Mulai Rp 49.000
                 </button>
-                <p style={{ marginTop: 14, fontSize: 12, color: COLOR.textFaint }}>
-                    ✓ Aktivasi instan &nbsp;·&nbsp; ✓ Lisensi via WhatsApp & Email &nbsp;·&nbsp; ✓ Garansi uang kembali 3 hari
-                </p>
             </div>
         </section>
     );
@@ -835,40 +990,53 @@ function FinalCTASection({ scrollTo }) {
 
 function Footer() {
     return (
-        <footer style={{ borderTop: `1px solid ${COLOR.border}`, padding: '40px 20px' }}>
-            <div style={{ maxWidth: MAXW, margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: 20, justifyContent: 'space-between', alignItems: 'center', fontSize: 12.5, color: COLOR.textFaint }}>
-                <div style={{ fontFamily: FONT_HEAD, fontWeight: 700, color: COLOR.textMuted }}>🔷 CertGen Pro</div>
-                <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
-                    <a href="/renew" style={{ color: COLOR.textFaint }}>Perpanjang Lisensi</a>
-                    <a href="/terms" style={{ color: COLOR.textFaint }}>Syarat & Ketentuan</a>
-                    <a href={WHATSAPP_LINK('Halo Admin, saya ingin bertanya tentang CertGen Pro.')} target="_blank" rel="noopener noreferrer" style={{ color: COLOR.textFaint }}>
-                        Kontak ({WHATSAPP_DISPLAY})
-                    </a>
+        <footer style={{ background: COLOR.bgDark, padding: '40px 20px 24px' }}>
+            <div style={{ maxWidth: MAXW, margin: '0 auto', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24 }}>
+                <div>
+                    <div style={{ fontFamily: FONT_HEAD, fontWeight: 800, fontSize: 17, color: '#fff', marginBottom: 8 }}>{APP_NAME}</div>
+                    <p style={{ fontSize: 12, color: COLOR.textFaint, maxWidth: 280, lineHeight: 1.6 }}>
+                        Aplikasi desktop Windows untuk membuat dan mengirim sertifikat digital secara massal.
+                    </p>
                 </div>
-                <div>© {new Date().getFullYear()} CertGen Pro — ImagineStudio. Semua hak dilindungi.</div>
+                <div style={{ display: 'flex', gap: 40, flexWrap: 'wrap' }}>
+                    <div>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: '#fff', marginBottom: 10 }}>Produk</div>
+                        <FooterLink href="/#fitur">Fitur</FooterLink>
+                        <FooterLink href="/#harga">Harga</FooterLink>
+                        <FooterLink href="/renew">Perpanjangan Lisensi</FooterLink>
+                        <FooterLink href="/download">Download Aplikasi</FooterLink>
+                    </div>
+                    <div>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: '#fff', marginBottom: 10 }}>Bantuan</div>
+                        <FooterLink href="/terms">Syarat &amp; Ketentuan</FooterLink>
+                        <FooterLink href={WHATSAPP_LINK(`Halo Admin, saya butuh bantuan terkait ${APP_NAME}.`)}>Chat WhatsApp</FooterLink>
+                    </div>
+                </div>
+            </div>
+            <div style={{ maxWidth: MAXW, margin: '32px auto 0', borderTop: `1px solid #1e293b`, paddingTop: 18, fontSize: 11, color: COLOR.textFaint, textAlign: 'center' }}>
+                © {new Date().getFullYear()} {APP_NAME}. Semua hak dilindungi.
             </div>
         </footer>
     );
 }
 
-/* =========================================================================
-   HELPERS / STYLES
-   ========================================================================= */
-
-const h2Style = { fontFamily: FONT_HEAD, fontSize: 'clamp(22px, 3.5vw, 32px)', fontWeight: 800, textAlign: 'center', marginBottom: 14, color: COLOR.text };
-
-function fadeStyle(visible, extra) {
-    return { opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(24px)', transition: 'opacity 0.6s ease, transform 0.6s ease', ...extra };
+function FooterLink({ href, children }) {
+    return (
+        <a href={href} style={{ display: 'block', fontSize: 12, color: COLOR.textFaint, textDecoration: 'none', marginBottom: 8 }}>
+            {children}
+        </a>
+    );
 }
 
-const cardStyle = { background: COLOR.bgCard, border: `1px solid ${COLOR.border}`, padding: '32px 24px', borderRadius: 16, width: '100%', boxSizing: 'border-box' };
-const badgeStyle = { background: '#12213f', color: COLOR.accentLight, fontSize: 11, fontWeight: 'bold', padding: '4px 10px', borderRadius: 20, display: 'inline-block' };
-const subtitleStyle = { margin: '8px 0 0 0', color: COLOR.textMuted, fontSize: 13, lineHeight: '1.4' };
-const labelStyle = { display: 'block', fontSize: 12, fontWeight: 'bold', color: COLOR.textMuted, marginBottom: 6 };
-const inputStyle = { display: 'block', width: '100%', padding: 10, background: COLOR.bgElevated, border: `1px solid ${COLOR.border}`, borderRadius: 8, color: '#fff', fontSize: 13, boxSizing: 'border-box' };
-const buttonStyle = { width: '100%', padding: 12, background: COLOR.accent, color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 'bold', fontSize: 14, transition: '0.2s' };
-const messageStyle = { marginTop: 16, padding: 10, background: '#12213f', border: `1px solid ${COLOR.border}`, borderRadius: 8, fontSize: 12, color: '#cbd5e1', textAlign: 'center', lineHeight: '1.4' };
+/* =========================================================================
+   SHARED
+   ========================================================================= */
 
-const pkgGridStyle = { display: 'grid', gap: 12, marginBottom: 20 };
-const pkgCardStyle = { border: `1px solid ${COLOR.border}`, borderRadius: 12, padding: 16, cursor: 'pointer', transition: '0.2s', position: 'relative' };
-const popularBadgeStyle = { position: 'absolute', top: -9, right: 12, background: COLOR.accent, color: '#fff', fontSize: 9, fontWeight: 'bold', padding: '3px 8px', borderRadius: 4 };
+function SectionHeading({ eyebrow, title, center }) {
+    return (
+        <div style={{ textAlign: center ? 'center' : 'left', maxWidth: 680, margin: center ? '0 auto' : 0 }}>
+            <span style={{ fontSize: 12, fontWeight: 800, color: COLOR.primary, letterSpacing: 1 }}>{eyebrow}</span>
+            <h2 style={{ fontFamily: FONT_HEAD, fontSize: 30, fontWeight: 800, margin: '10px 0 0', color: COLOR.text, lineHeight: 1.25 }}>{title}</h2>
+        </div>
+    );
+}

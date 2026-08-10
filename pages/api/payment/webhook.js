@@ -1,15 +1,20 @@
 // pages/api/payment/webhook.js
+//
+// PENTING: URL endpoint webhook ini ("/api/payment/webhook") TIDAK berubah.
+// Yang berubah hanya domain di depannya (mengikuti domain Vercel akun baru).
+// Setelah deploy ke Vercel baru, set Payment Notification URL di
+// Dashboard Midtrans ke: https://<domain-baru-anda>/api/payment/webhook
+// Token MIDTRANS_SERVER_KEY, FONNTE_TOKEN, dan BREVO_API_KEY tetap sama
+// seperti sebelumnya (env var, tidak berubah).
 
 import crypto from 'crypto';
 import { supabase } from '../../../lib/supabase';
 import { sendWhatsApp, sendEmail, buildLicenseMessage } from '../../../lib/notify';
 
-// Mapping nama aplikasi per app_id
 const APP_NAMES = {
     certgenpro: 'CertGen Pro',
 };
 
-// Menambahkan durasi lifetime (36135 hari) ke mapping durasi
 const PACKAGE_DAYS = { daily: 1, monthly: 30, yearly: 365, lifetime: 36135 };
 
 export default async function handler(req, res) {
